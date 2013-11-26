@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Emerald Starlight</title>
+
+  <link href='css/bootstrap.min.css' rel='stylesheet' media='screen'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <link href='css/bootstrap-responsive.css' rel='stylesheet'>
+ 
+
+  <link rel='stylesheet' type='text/css' href='css/style.css'>
+</head>
+
+<body background='#000000'>
+  <div id='screen' unselectable='on' class='unselectable'>
+    <div id='hud' unselectable='on' class='unselectable'>
+      <div id='score' unselectable='on' class='unselectable'></div>
+      <div id='robotCount' unselectable='on' class='unselectable'></div>
+    </div>
+    <div id='level' unselectable='on' class='unselectable'></div>
+    <div id='progress' unselectable='on' class='unselectable progress progress-success progress-striped active'>
+      <div id='progress-bar' unselectable='on' class='unselectable bar' style='width: 0%'></div>
+    </div>
+    <h1><div id='credit' unselectable='on' class='unselectable'></div></h1>
+  </div>
+
+  <!-- would be nice to use application/javascript but that does not work with IE8 -->
+  <script type='text/javascript' src='js/jquery-1.7.1.min.js'></script>
+  <script type='text/javascript' src='js/jquery.spritely-0.6.1.js'></script>
+  <script type='text/javascript' src='js/soundmanager2-nodebug-jsmin.js'></script>
+  <script type="text/javascript" src="js/PxLoader.js"></script>
+  <script type="text/javascript" src="js/PxLoaderImage.js"></script> 
+  <script type="text/javascript" src="js/PxLoaderSound.js"></script> 
+  <script type='text/javascript' src='js/game-1.0.js'></script>
+</body>
+</html>

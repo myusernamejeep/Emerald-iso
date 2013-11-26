@@ -1,0 +1,62 @@
+*.unselectable {
+ -moz-user-select: -moz-none;
+ -khtml-user-select: none;
+ -webkit-user-select: none;
+ -ms-user-select: none;
+ user-select: none;
+}
+
+#screen * {
+  position: absolute;
+}
+
+#screen {
+  background-image: url(back.jpg);
+  top: 0px;
+  left: 0px;
+  width: 768px;
+  height: 640px;
+}
+
+#hud * {
+  z-index: 2;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+#credit {
+  top: 220px;
+  left: 10px;
+  width: 748px;
+  z-index: 2;
+  color: #00CC00;
+  text-align: center;
+  font-weight: bold;
+}
+
+#progress {
+  top: 250px;
+  left: 284px;
+  width: 200px;
+}
+
+#score {
+  left: 184px;
+  top: 16px;
+  color: #00CC00;
+  text-align: left;
+}
+
+#robotCount {
+  left: 484px;
+  top:  16px;
+  color: #FF0000;
+  width: 100px;
+  text-align: right;
+}
+
+#startButton {
+  left: 307px;
+  top: 550px;
+  width: 94px;
+}

@@ -8,6 +8,9 @@
 var api = {};
 var level_path = 'data/';
 var image_path = 'images/';
+var nemesis = ['nemesis_blue','nemesis_brown','nemesis_green','nemesis_greenblue','nemesis_lightblue','nemesis_lightgreen','nemesis_lime','nemesis_neon','nemesis_pink','nemesis_purple','nemesis_red','nemesis_yellow','nemesis_cartoon'];
+var blocks = ['block_yellow','block_purple','block_red','block_pink','block_lime','block_lightblue','block_greenblue','block_green','block_brown','block_blue','block'];
+var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_greenblue','teleport_lightblue','teleport_lime','teleport_pink','teleport_purple','teleport_red','teleport_yellow','teleport'];  
 
 (function(jQuery) {
 
@@ -17,6 +20,8 @@ var image_path = 'images/';
 
   var NEMESIS_GID = 7;
   var TELEPORT_GID = 6;
+  //var CRYSTAL_P1_GID = 8;
+  //var CRYSTAL_P2_GID = 9;
   var CAPTION_LENGTH = 5000;
 
   // Level properties:
@@ -36,7 +41,7 @@ var image_path = 'images/';
 
       api['level'] = level;
       api['numTeleported'] = 0;
-      api['xoffset'] = $('#screen').innerWidth() / 2;
+      api['xoffset'] = $('#screen').innerWidth() * 0.7 ;
       api['yoffset'] = 4;
       api['objectCount'] = 0;
       api['robotScore'] = 0;
@@ -88,6 +93,7 @@ var image_path = 'images/';
             "px; background-position: " + (-x) + "px " + (-y) +
             "px; background-repeat: no-repeat; position: absolute; }");
           gid++;
+
           x += tileWidth;
           if (x >= imageWidth) {
             x = 0;
@@ -132,21 +138,29 @@ var image_path = 'images/';
     // TODO somekind of z ordering sort is required.
     if (0 != gid) {
 
-      console.log('addObject', gid);
+      //console.log('addObject', gid);
       var dims = api['gids'][gid];
       var p = toScreen(x, y);
       var X = p.x;
       var Y = p.y - (dims['height'] - api['tH']) + dims['yoffset'];
       var id = 'l' + layer + 'x' + x + 'y' + y + 'o' + api['objectCount'];
       api['objectCount']++;
-      target.append("<div id='" + id + "' class='gid" + gid + "' style='top:" + Y + "px; left:" + X + "px;'></div>");
-      $('#' + id).attr('x', x).attr('y', y).attr('l', layer).attr('s', 1);
+      var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
+      
+      target.append("<div id='" + id + "' class='gid" + gid + " "+ blockd_class +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      var _id = $('#' + id);
+      _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1);
       if (NEMESIS_GID == gid) {
-	      $('#' + id).attr('xv','1').attr('yv','1')
+	      var nemesis_class = nemesis[(Math.random() * nemesis.length).toFixed(0)];
+        _id.attr('xv','1').attr('yv','1')
         .sprite({fps: 6, no_of_frames: 6})
         .animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
+        _id.addClass(nemesis_class);
+      }else if (TELEPORT_GID == gid) {
+        var teleports_class = teleports[(Math.random() * teleports.length).toFixed(0)];
+        _id.addClass(teleports_class);
       }
-      return $('#' + id);
+      return _id;
     }
   }
 
@@ -194,7 +208,7 @@ var image_path = 'images/';
       this.offsetLeft + 64 + yv * 32,
       this.offsetTop + 100 + xv * 16);
  
-    console.log('walkAtEdge', p.x, p.y, xv, yv);
+    //console.log('walkAtEdge', p.x, p.y, xv, yv);
     //query block (l=0)
     var b = $('div[x="' + p.x + '"][y="' + p.y + '"][l="0"]');
 
@@ -231,7 +245,7 @@ var image_path = 'images/';
     var xv = parseInt($(this).attr('xv'));
     var yv = parseInt($(this).attr('yv'));
 
-    console.log('walkAtCenter', p.x, p.y, xv, yv);
+    //console.log('walkAtCenter', p.x, p.y, xv, yv);
 
     // change of direction
     var state = $(this).attr('s');
@@ -336,13 +350,13 @@ var image_path = 'images/';
     safeTimeout(addNewRobot, 1000);
   }
 
-  function gameOver() {
+  function gameOver() {/*
     removePreviousLevel();
     var c = $('#credit');
     c.text('End');
     c.css('color','#00CC00');
     captionAnim(c);
-    safeTimeout(function() { introScreen(0); }, CAPTION_LENGTH);
+    safeTimeout(function() { introScreen(0); }, CAPTION_LENGTH);*/
   }
 
   function spinDirection() {

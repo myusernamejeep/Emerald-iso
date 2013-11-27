@@ -14,8 +14,8 @@
   background-image: url(../images/clouds.jpg); /*url(back.jpg);*/
   top: 0px;
   left: 0px;
-  width: 768px;
-  height: 640px;
+  width: 100%;
+  height: 100%;
 }
 
 #hud * {
@@ -60,3 +60,111 @@
   top: 550px;
   width: 94px;
 }
+
+.block_yellow {
+  background-image: url(../images/block_yellow.png) !important; 
+}
+.block_purple {
+  background-image: url(../images/block_purple.png) !important; 
+}
+.block_red {
+  background-image: url(../images/block_red.png) !important; 
+}
+.block_pink {
+  background-image: url(../images/block_pink.png) !important; 
+}
+.block_lime {
+  background-image: url(../images/block_lime.png) !important; 
+}
+.block_lightblue {
+  background-image: url(../images/block_lightblue.png) !important; 
+}
+.block_greenblue {
+  background-image: url(../images/block_greenblue.png) !important; 
+}
+.block_green {
+  background-image: url(../images/block_green.png) !important; 
+}
+.block_brown {
+  background-image: url(../images/block_brown.png) !important; 
+}
+.block_blue {
+  background-image: url(../images/block_blue.png) !important; 
+}
+.block {
+  background-image: url(../images/block.png) !important; 
+}
+
+.nemesis_blue {
+  background-image: url(../images/nemesis_blue.png) !important; 
+}
+.nemesis_brown {
+  background-image: url(../images/nemesis_brown.png) !important; 
+}
+.nemesis_green {
+  background-image: url(../images/nemesis_green.png) !important; 
+}
+.nemesis_greenblue {
+  background-image: url(../images/nemesis_greenblue.png) !important; 
+}
+.nemesis_lightblue {
+  background-image: url(../images/nemesis_lightblue.png) !important; 
+}
+.nemesis_lightgreen {
+  background-image: url(../images/nemesis_lightgreen.png) !important; 
+}
+.nemesis_lime {
+  background-image: url(../images/nemesis_lime.png) !important; 
+}
+.nemesis_neon {
+  background-image: url(../images/nemesis_neon.png) !important; 
+}
+.nemesis_pink {
+  background-image: url(../images/nemesis_pink.png) !important; 
+}
+.nemesis_purple {
+  background-image: url(../images/nemesis_purple.png) !important; 
+}
+.nemesis_red {
+  background-image: url(../images/nemesis_red.png) !important; 
+}
+.nemesis_yellow {
+  background-image: url(../images/nemesis_yellow.png) !important; 
+}
+.nemesis_cartoon {
+  background-image: url(../images/nemesis_cartoon.png) !important; 
+}
+
+.teleport_blue {
+  background-image: url(../images/teleport_blue.png) !important; 
+}
+.teleport_brown {
+  background-image: url(../images/teleport_brown.png) !important; 
+}
+.teleport_green {
+  background-image: url(../images/teleport_green.png) !important; 
+}
+.teleport_greenblue {
+  background-image: url(../images/teleport_greenblue.png) !important; 
+}
+.teleport_lightblue {
+  background-image: url(../images/teleport_lightblue.png) !important; 
+}
+.teleport_lime {
+  background-image: url(../images/teleport_lime.png) !important; 
+}
+.teleport_pink {
+  background-image: url(../images/teleport_pink.png) !important; 
+}
+.teleport_purple {
+  background-image: url(../images/teleport_purple.png) !important; 
+}
+.teleport_red {
+  background-image: url(../images/teleport_red.png) !important; 
+}
+.teleport_yellow {
+  background-image: url(../images/teleport_yellow.png) !important; 
+}
+.teleport {
+  background-image: url(../images/teleport.png) !important; 
+} 

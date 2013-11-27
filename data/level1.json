@@ -93,6 +93,36 @@
          "tilewidth":128
         }, 
         {
+         "firstgid":8,
+         "image":"teleport.png",
+         "imageheight":128,
+         "imagewidth":128,
+         "margin":0,
+         "name":"teleport",
+         "properties":
+            {
+             "yoffset":"40"
+            },
+         "spacing":0,
+         "tileheight":128,
+         "tilewidth":128
+        }, 
+        {
+         "firstgid":9,
+         "image":"teleport.png",
+         "imageheight":128,
+         "imagewidth":128,
+         "margin":0,
+         "name":"teleport",
+         "properties":
+            {
+             "yoffset":"40"
+            },
+         "spacing":0,
+         "tileheight":128,
+         "tilewidth":128
+        },  
+        {
          "firstgid":7,
          "image":"nemesis.png",
          "imageheight":576,

@@ -20,9 +20,18 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
 
   var NEMESIS_GID = 7;
   var TELEPORT_GID = 6;
-  //var CRYSTAL_P1_GID = 8;
-  //var CRYSTAL_P2_GID = 9;
+  var CRYSTAL_P1_GID = 8;
+  var CRYSTAL_P2_GID = 9;
   var CAPTION_LENGTH = 5000;
+
+  var player_config = {
+    p1: {
+      color : 'blue'
+    },
+    p2 : {
+      color : 'lime'
+    }
+  }
 
   // Level properties:
   // . robotCount
@@ -158,6 +167,14 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
         _id.addClass(nemesis_class);
       }else if (TELEPORT_GID == gid) {
         var teleports_class = teleports[(Math.random() * teleports.length).toFixed(0)];
+        _id.addClass(teleports_class);
+      }else if (CRYSTAL_P1_GID == gid) {
+        var teleport_color = 'teleport_' + player_config['p1']['color'];
+        var teleports_class = teleport_color;
+        _id.addClass(teleports_class);
+      }else if (CRYSTAL_P2_GID == gid) {
+        var teleport_color = 'teleport_' + player_config['p2']['color'];
+        var teleports_class = teleport_color;
         _id.addClass(teleports_class);
       }
       return _id;

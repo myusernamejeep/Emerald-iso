@@ -11,7 +11,7 @@
 }
 
 #screen {
-  background-image: url(back.jpg);
+  background-image: url(../images/clouds.jpg); /*url(back.jpg);*/
   top: 0px;
   left: 0px;
   width: 768px;

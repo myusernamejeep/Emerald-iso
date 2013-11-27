@@ -6,6 +6,8 @@
 
 // TODO make private again
 var api = {};
+var level_path = 'data/';
+var image_path = 'images/';
 
 (function(jQuery) {
 
@@ -80,7 +82,7 @@ var api = {};
           api['gids'][gid] = {'width':tileWidth, 'height':tileHeight,
             'top':y, 'left':x, 'yoffset':yoffset};
           stylesheet += (' .gid' + gid +
-            " { background-image: url('" + tileset['image'] +
+            " { background-image: url('" + image_path + tileset['image'] +
             "'); width: " + tileWidth +
             "px; height: " + tileHeight +
             "px; background-position: " + (-x) + "px " + (-y) +
@@ -129,19 +131,20 @@ var api = {};
   function addObject(target, layer, x, y, gid) {
     // TODO somekind of z ordering sort is required.
     if (0 != gid) {
+
+      console.log('addObject', gid);
       var dims = api['gids'][gid];
       var p = toScreen(x, y);
       var X = p.x;
       var Y = p.y - (dims['height'] - api['tH']) + dims['yoffset'];
       var id = 'l' + layer + 'x' + x + 'y' + y + 'o' + api['objectCount'];
       api['objectCount']++;
-      target.append("<div id='" + id + "' class='gid" + gid +
-        "' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      target.append("<div id='" + id + "' class='gid" + gid + "' style='top:" + Y + "px; left:" + X + "px;'></div>");
       $('#' + id).attr('x', x).attr('y', y).attr('l', layer).attr('s', 1);
       if (NEMESIS_GID == gid) {
-	$('#' + id).attr('xv','1').attr('yv','1').sprite(
-          {fps: 6, no_of_frames: 6}).animate({top:'+=16px',left:'+=32px'},
-          api['robotSpeed'], 'linear', walk1);
+	      $('#' + id).attr('xv','1').attr('yv','1')
+        .sprite({fps: 6, no_of_frames: 6})
+        .animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
       }
       return $('#' + id);
     }
@@ -183,12 +186,16 @@ var api = {};
   });
 
   // called when robot at edge of new square
-  function walk1() {
+  function walkAtEdge() {
+
     var xv = parseInt($(this).attr('xv'));
     var yv = parseInt($(this).attr('yv'));
     var p = fromScreen(
       this.offsetLeft + 64 + yv * 32,
       this.offsetTop + 100 + xv * 16);
+ 
+    console.log('walkAtEdge', p.x, p.y, xv, yv);
+    //query block (l=0)
     var b = $('div[x="' + p.x + '"][y="' + p.y + '"][l="0"]');
 
     // Fall off edge of blocks
@@ -198,7 +205,7 @@ var api = {};
       return;
     }
 
-    // another robot
+    // query another robot (l=1)
     var r = $('div[x="' + p.x + '"][y="' + p.y + '"][l="1"]');
     if (r.length > 0) {
       soundManager.play('crash');
@@ -211,11 +218,11 @@ var api = {};
     }
 
     $(this).animate({top:'+=' + xv * 16 + 'px', left:'+=' + yv * 32 + 'px'},
-      api['robotSpeed'], 'linear', walk2);
+      api['robotSpeed'], 'linear', walkAtCenter);
   }
 
   // called when robot at center of square
-  function walk2() {
+  function walkAtCenter() {
     // Calculate where the character is on the isometric grid
     var p = fromScreen(this.offsetLeft + 64, this.offsetTop + 100);
     var e = $('div[x="' + p.x + '"][y="' + p.y + '"][l="0"]');
@@ -223,6 +230,8 @@ var api = {};
     // make any dynamic adjustments due to grid location
     var xv = parseInt($(this).attr('xv'));
     var yv = parseInt($(this).attr('yv'));
+
+    console.log('walkAtCenter', p.x, p.y, xv, yv);
 
     // change of direction
     var state = $(this).attr('s');
@@ -263,7 +272,7 @@ var api = {};
 
     // setup the next animation sequence
     $(this).animate({top:'+=' + xv * 16 + 'px',left:'+=' + 32 * yv + 'px'},
-      api['robotSpeed'], 'linear', walk1);
+      api['robotSpeed'], 'linear', walkAtEdge);
     $(this).spState(state);
     $(this).attr('xv', xv).attr('yv', yv).attr('s', state);
   }
@@ -321,7 +330,7 @@ var api = {};
 
   function nextLevel() {
     removePreviousLevel();
-    loadLevel('level1.json', $('#level'));
+    loadLevel(level_path +'level1.json', $('#level'));
 
     // use timer to get around the elements not there before rendering.
     safeTimeout(addNewRobot, 1000);
@@ -361,7 +370,7 @@ var api = {};
           s.click(startGame);
         }
         s.show();
-        c.html('From the producer of Neon Starlight');
+        c.html('Inspired by Neon light and Star in the sky.');
         c.css('color', 'cyan');
         safeTimeout(function() { introScreen(stage + 1); }, CAPTION_LENGTH);
         break;
@@ -369,7 +378,7 @@ var api = {};
       case 1:
       {
         c.css('color', '#00CC00');
-        c.text('Emerald Starlight');
+        c.text('Robot path trial.');
         safeTimeout(function() { introScreen(stage + 1); }, CAPTION_LENGTH);
         break;
       }
@@ -403,7 +412,7 @@ var api = {};
   }
 
   function start() {
-    soundManager.url = './'; 
+    soundManager.url = './data'; 
     soundManager.flashVersion = 9; 
     soundManager.useHighPerformance = true;
     soundManager.audioFormats.mp3.required = false;
@@ -416,10 +425,10 @@ var api = {};
     }); 
  
     var loader = new PxLoader(), 
-      backgroundImg = loader.addImage('back.jpg'), 
-      blockImg = loader.addImage('block.png'), 
-      nemeisImg = loader.addImage('nemesis.png'), 
-      teleportImg = loader.addImage('teleport.png'); 
+      backgroundImg = loader.addImage(image_path+'clouds.jpg'), 
+      blockImg = loader.addImage(image_path+'block.png'), 
+      nemeisImg = loader.addImage(image_path+'nemesis.png'), 
+      teleportImg = loader.addImage(image_path+'teleport.png'); 
 
     loader.addProgressListener(function(e) { 
       var p = $('#progress-bar');
@@ -443,9 +452,9 @@ var api = {};
         i, url; 
  
       for(i=0; i < soundNames.length; i++) { 
-        url = './' + soundNames[i] + '.m4a'; 
+        url = './sounds/' + soundNames[i] + '.m4a'; 
         if (!soundManager.canPlayURL(url)) {
-          url = './' + soundNames[i] + '.ogg';
+          url = './sounds/' + soundNames[i] + '.ogg';
           if (!soundManager.canPlayURL(url)) {
             console.log('Skipping ' + url);
             continue;
@@ -456,7 +465,18 @@ var api = {};
       loader.start();
     }); 
 
-    $('#screen').pan({fps: 30, speed: 1, dir: 'up'});
+    var bg_dir;
+    var r = Math.random() * 10;
+    if (r > 7.5){
+      bg_dir = 'up';
+    }else if (r > 5.0){
+      bg_dir = 'right';
+    }else if (r > 2.5){
+      bg_dir = 'down';
+    }else if (r > 0){
+      bg_dir = 'left';
+    }
+    $('#screen').pan({fps: 30, speed: 1, dir: bg_dir || 'left' });
   }
 
   // Start the game once everything is loaded

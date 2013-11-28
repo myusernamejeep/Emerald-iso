@@ -1,7 +1,7 @@
 { "height":15,
  "layers":[
         {
-         "data":[6, 1, 1, 1, 4, 1, 1, 1, 1, 5, 
+         "data":[8, 1, 1, 1, 4, 1, 1, 1, 1, 5, 
                  1, 0, 0, 0, 5, 0, 0, 0, 0, 1, 
                  4, 1, 1, 4, 1, 4, 0, 0, 0, 1, 
                  1, 0, 0, 1, 0, 5, 4, 1, 1, 4, 
@@ -15,7 +15,7 @@
                  1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
                  1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
                  1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
-                 5, 1, 1, 5, 1, 1, 1, 4, 1, 6],
+                 5, 1, 1, 5, 1, 1, 1, 4, 1, 9],
          "height":15,
          "name":"blocks",
          "opacity":1,
@@ -61,6 +61,7 @@
      "teleportTarget":"5"
     },
  "tileheight":64,
+ 
  "tilesets":[
         {
          "firstgid":1,
@@ -78,7 +79,7 @@
          "tilewidth":128
         }, 
         {
-         "firstgid":6,
+         "firstgid":7,
          "image":"teleport.png",
          "imageheight":128,
          "imagewidth":128,
@@ -91,7 +92,7 @@
          "spacing":0,
          "tileheight":128,
          "tilewidth":128
-        }, 
+        },
         {
          "firstgid":8,
          "image":"teleport.png",
@@ -121,9 +122,9 @@
          "spacing":0,
          "tileheight":128,
          "tilewidth":128
-        },  
+        },
         {
-         "firstgid":7,
+         "firstgid":10,
          "image":"nemesis.png",
          "imageheight":576,
          "imagewidth":768,

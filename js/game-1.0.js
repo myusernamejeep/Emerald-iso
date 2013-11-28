@@ -11,6 +11,40 @@ var image_path = 'images/';
 var nemesis = ['nemesis_blue','nemesis_brown','nemesis_green','nemesis_greenblue','nemesis_lightblue','nemesis_lightgreen','nemesis_lime','nemesis_neon','nemesis_pink','nemesis_purple','nemesis_red','nemesis_yellow','nemesis_cartoon'];
 var blocks = ['block_yellow','block_purple','block_red','block_pink','block_lime','block_lightblue','block_greenblue','block_green','block_brown','block_blue','block'];
 var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_greenblue','teleport_lightblue','teleport_lime','teleport_pink','teleport_purple','teleport_red','teleport_yellow','teleport'];  
+var seleted_target = null;
+var path_to_walk = [];
+var player_config = {
+    p1: {
+      color : 'yellow',
+      CRYSTAL_GID : 8,
+      activeRobots : 0,
+      NEMESIS_GID : 10,
+      startX : 5,
+      startY : 0,
+      robotCount : 10,
+      robotScoreTrigger : 50,
+      robotSpeed : 250,
+      crystalTarget : 9,
+      xv : 1,
+      yv : 1,
+      state : 4 ,
+    },
+    p2 : {
+      color : 'red',
+      CRYSTAL_GID : 9,
+      activeRobots : 0,
+      NEMESIS_GID : 11,
+      startX:5,
+      startY:14,
+      robotCount : 10,
+      robotScoreTrigger : 50,
+      robotSpeed : 250,
+      crystalTarget : 8,
+      xv : -1,
+      yv : 1, 
+      state : 2,   
+    }
+  };
 
 (function(jQuery) {
 
@@ -20,18 +54,10 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
 
   var NEMESIS_GID = 7;
   var TELEPORT_GID = 6;
-  var CRYSTAL_P1_GID = 8;
-  var CRYSTAL_P2_GID = 9;
   var CAPTION_LENGTH = 5000;
+  
 
-  var player_config = {
-    p1: {
-      color : 'blue'
-    },
-    p2 : {
-      color : 'lime'
-    }
-  }
+  
 
   // Level properties:
   // . robotCount
@@ -102,7 +128,6 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
             "px; background-position: " + (-x) + "px " + (-y) +
             "px; background-repeat: no-repeat; position: absolute; }");
           gid++;
-
           x += tileWidth;
           if (x >= imageWidth) {
             x = 0;
@@ -115,7 +140,8 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
       }
       $('#style').remove();
       $('<style id="style">' + stylesheet + '</style>').appendTo('head');
-  
+      console.log('gid', gid, stylesheet );
+          
       // Create div element for each map entity
       for (var layer = 0; layer < api['layers'].length; ++layer) {
         var data = api['layers'][layer].data;
@@ -159,24 +185,62 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
       target.append("<div id='" + id + "' class='gid" + gid + " "+ blockd_class +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1);
-      if (NEMESIS_GID == gid) {
-	      var nemesis_class = nemesis[(Math.random() * nemesis.length).toFixed(0)];
-        _id.attr('xv','1').attr('yv','1')
-        .sprite({fps: 6, no_of_frames: 6})
-        .animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
-        _id.addClass(nemesis_class);
-      }else if (TELEPORT_GID == gid) {
-        var teleports_class = teleports[(Math.random() * teleports.length).toFixed(0)];
-        _id.addClass(teleports_class);
-      }else if (CRYSTAL_P1_GID == gid) {
-        var teleport_color = 'teleport_' + player_config['p1']['color'];
-        var teleports_class = teleport_color;
-        _id.addClass(teleports_class);
-      }else if (CRYSTAL_P2_GID == gid) {
-        var teleport_color = 'teleport_' + player_config['p2']['color'];
-        var teleports_class = teleport_color;
-        _id.addClass(teleports_class);
+
+      switch(gid){
+
+        case player_config.p1.NEMESIS_GID:
+
+          var nemesis_class = 'nemesis_' + player_config.p1.color;
+          _id.attr('xv','1').attr('yv','1')
+          .sprite({fps: 6, no_of_frames: 6});
+          //.animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
+          _id.addClass(nemesis_class);
+
+          break;
+
+        case player_config.p2.NEMESIS_GID:
+
+          var nemesis_class = 'nemesis_' + player_config.p2.color;
+          _id.attr('xv','1').attr('yv','1')
+          .sprite({fps: 6, no_of_frames: 6});
+          //.animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
+          _id.addClass(nemesis_class);
+          
+          break;  
+
+        case NEMESIS_GID:
+
+          var nemesis_class = nemesis[(Math.random() * nemesis.length).toFixed(0)];
+          _id.attr('xv','1').attr('yv','1')
+          .sprite({fps: 6, no_of_frames: 6})
+          .animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
+          _id.addClass(nemesis_class);
+          break;
+
+        case TELEPORT_GID:   
+
+          var teleports_class = teleports[(Math.random() * teleports.length).toFixed(0)];
+          _id.addClass(teleports_class);
+
+          break;
+
+        case player_config.p1.CRYSTAL_GID:
+
+          var teleport_color = 'teleport_' + player_config.p1.color;
+          var teleports_class = teleport_color;
+          _id.addClass(teleports_class);
+
+          break;
+
+        case player_config.p2.CRYSTAL_GID:
+
+          var teleport_color = 'teleport_' + player_config.p2.color;
+          var teleports_class = teleport_color;
+          _id.addClass(teleports_class);
+
+          break;  
       }
+
       return _id;
     }
   }
@@ -214,7 +278,81 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
       s.removeClass('gid5');
       s.addClass('gid2');
     }
+
+    if(seleted_target && seleted_target.attr('x')  != p.x && seleted_target.attr('y')  != p.y){
+      //go to this point.
+      resetTrial();
+      
+      var data = api['layers'][0].data;
+      var count = 0;
+      var nodeRow = [];
+      var nodes = [];
+      for(var x=0;x<data.length ;x++) {
+        count ++;
+        var _grid_data = data[x] > 0 ? 1: 0;
+
+        nodeRow.push(_grid_data);
+        if (count == api['layers'][0].width){
+          nodes.push(nodeRow);
+          count = 0;
+          nodeRow = [];
+        }
+
+      }
+      //console.log( 'nodes ', nodes );
+      var graph = new Graph(nodes);
+      var start = graph.nodes[seleted_target.attr('y')][seleted_target.attr('x')];
+      //console.log( 'start', start);
+      var end = graph.nodes[p.y][p.x];
+      //console.log( 'end', end);
+      //if (seleted_target.attr('x')  != p.x && seleted_target.attr('y')  != p.y){
+        path_to_walk = astar.search(graph.nodes, start, end);
+        //console.log( 'path_to_walk', path_to_walk );
+        walkTrial();
+      //}
+      
+    }
+ 
   });
+
+  function resetTrial(){
+    path_to_walk = [];
+  }
+
+  function walkTrial(){
+    if(path_to_walk.length <= 0){
+      return false;
+    }
+    var walk_grid = _.first(path_to_walk);
+    path_to_walk = _.rest(path_to_walk);
+    var e = $('div[x="' + walk_grid.x + '"][y="' + walk_grid.y + '"][l="0"]');
+    var state, xv, yv;
+    var diffX = seleted_target.attr('x') - walk_grid.x > 0 ?  1:-1;
+    var diffY = seleted_target.attr('y') - walk_grid.y > 0 ?  -1:1;
+    if (diffX == -1 && diffY == 1) {
+      xv = -1;
+      yv = 1;
+      state = 2;
+    } else if (diffX == -1 && diffY == -1) {
+      xv = -1;
+      yv = -1;
+      state = 3;
+    } else if (diffX == 1 && diffY == -1) {
+      xv = 1;
+      yv = -1;
+      state = 4;
+    } else if (diffX == 1 && diffY == 1) {
+      xv = 1;
+      yv = 1;
+      state = 1;
+    }
+    console.log( 'path_to_walk', path_to_walk, state, xv, yv);
+    
+    seleted_target.attr('x',walk_grid.x ).attr('y',walk_grid.y)
+    .attr('xv',xv ).attr('yv',yv).spState(state)
+    .animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
+    
+  }
 
   // called when robot at edge of new square
   function walkAtEdge() {
@@ -344,6 +482,37 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
       api['activeRobots']++;
     }
   }
+ 
+  function addNewPlayerCharacter(p) {
+
+      p = p || 'p1';
+      var player = player_config[p];
+      if (player.activeRobots > player.robotCount){
+        return false;
+      }
+
+      var robot = addObject( $('#level'), 1, player.startX , player.startY , player.NEMESIS_GID );
+      robot.attr('xv',player.xv).attr('yv',player.yv).attr('s', player.state);
+      robot.spState(player.state);  
+      robot.removeClass('vignette');  
+      robot.click(function(){
+        $('.vignette').removeClass('vignette');  
+        seleted_target = $(this);
+        seleted_target.addClass('vignette'); 
+
+        var b = $('div[x="' + seleted_target.attr('x') + '"][y="' + seleted_target.attr('y') + '"][l="0"]');
+        if (0 == b.length) {
+          console.log(b, seleted_target.attr('x') , seleted_target.attr('y'));
+          return;
+        }
+       
+
+      });
+      
+      player.activeRobots ++;
+
+      console.log('addNewPlayerCharacter', p, robot);
+  }
 
   function removePreviousLevel() {
 
@@ -365,6 +534,12 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
 
     // use timer to get around the elements not there before rendering.
     safeTimeout(addNewRobot, 1000);
+
+    safeTimeout(function(){
+      addNewPlayerCharacter('p1'); 
+      addNewPlayerCharacter('p2'); 
+    }, 1000);
+   
   }
 
   function gameOver() {/*

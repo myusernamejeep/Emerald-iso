@@ -184,7 +184,7 @@ var player_config = {
       
       target.append("<div id='" + id + "' class='gid" + gid + " "+ blockd_class +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
-      _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1);
+      _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 
       switch(gid){
 
@@ -279,7 +279,7 @@ var player_config = {
       s.addClass('gid2');
     }
 
-    if(seleted_target && seleted_target.attr('x')  != p.x && seleted_target.attr('y')  != p.y){
+    if(seleted_target && ( seleted_target.attr('x')  != p.x || seleted_target.attr('y')  != p.y) ){
       //go to this point.
       resetTrial();
       
@@ -325,33 +325,54 @@ var player_config = {
     }
     var walk_grid = _.first(path_to_walk);
     path_to_walk = _.rest(path_to_walk);
-    var e = $('div[x="' + walk_grid.x + '"][y="' + walk_grid.y + '"][l="0"]');
+    var current_y = walk_grid.x;
+    var current_x = walk_grid.y;
+
+    //var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
     var state, xv, yv;
-    var diffX = seleted_target.attr('x') - walk_grid.x > 0 ?  1:-1;
-    var diffY = seleted_target.attr('y') - walk_grid.y > 0 ?  -1:1;
-    if (diffX == -1 && diffY == 1) {
+    var diffX = current_x - seleted_target.attr('x');// <= 0 ?  -1:1;  // 1 , 0 leftt  // 0 , 1 up
+    var diffY = current_y - seleted_target.attr('y');// <= 0 ?  -1:1;
+    //console.log( 'diffX', diffX , 'diffY', diffY );
+    if(diffX == 0){
+      diffX = seleted_target.attr('xv');
+    }
+    if(diffY == 0){
+      diffY = seleted_target.attr('yv');
+    }
+
+    if (diffX == -1 && diffY == 1) { // up
       xv = -1;
       yv = 1;
       state = 2;
-    } else if (diffX == -1 && diffY == -1) {
+    } else if (diffX == -1 && diffY == -1) { // left 
       xv = -1;
       yv = -1;
       state = 3;
-    } else if (diffX == 1 && diffY == -1) {
+    } else if (diffX == 1 && diffY == -1) { // down
       xv = 1;
       yv = -1;
       state = 4;
-    } else if (diffX == 1 && diffY == 1) {
+    } else if (diffX == 1 && diffY == 1) { // right
       xv = 1;
       yv = 1;
       state = 1;
     }
-    console.log( 'path_to_walk', path_to_walk, state, xv, yv);
-    
-    seleted_target.attr('x',walk_grid.x ).attr('y',walk_grid.y)
+    //console.log( 'path_to_walk', path_to_walk, 'state', state, ' xv, yv',  xv, yv, 'walk_grid', walk_grid, 'seleted_target', seleted_target);
+    //console.log( 'e', walk_grid , seleted_target.attr('x'),seleted_target.attr('y'),current_x,current_y, "dif x ", seleted_target.attr('x') - current_x , "dif y",seleted_target.attr('y') - current_y );
+    var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
+    var gid = e.attr('gid');
+    var dims = api['gids'][gid];
+    var p = toScreen(walk_grid.y, walk_grid.x);
+    var X = p.x;
+    var Y = p.y - (dims['height'] - api['tH']) - 15;// + dims['yoffset'];
+    //console.log( X, Y , p);
+    seleted_target.attr('x', current_x ).attr('y', current_y)
     .attr('xv',xv ).attr('yv',yv).spState(state)
-    .animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
+    //.animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
+    .animate({top:Y  + 'px',left:X + 'px'}, api['robotSpeed'], 'linear', walkTrial);
     
+
+      
   }
 
   // called when robot at edge of new square
@@ -404,19 +425,19 @@ var player_config = {
 
     // change of direction
     var state = $(this).attr('s');
-    if (e.hasClass('gid2')) {
+    if (e.hasClass('gid2')) { // up
       xv = -1;
       yv = 1;
       state = 2;
-    } else if (e.hasClass('gid3')) {
+    } else if (e.hasClass('gid3')) { // left
       xv = -1;
       yv = -1;
       state = 3;
-    } else if (e.hasClass('gid4')) {
+    } else if (e.hasClass('gid4')) { // down
       xv = 1;
       yv = -1;
       state = 4;
-    } else if (e.hasClass('gid5')) {
+    } else if (e.hasClass('gid5')) { //right
       xv = 1;
       yv = 1;
       state = 1;

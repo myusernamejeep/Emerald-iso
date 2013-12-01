@@ -30,17 +30,47 @@ GameState = function() {
 
     callbacks: {
       onbeforestart: function(event, from, to) { log("STARTING UP"); },
-      onstart:       function(event, from, to) { log("READY");       },
+      onstart:       function(event, from, to) { 
+        log("READY");  
+
+        GameState.selected_position();     
+      },
       
-      onbeforeselected_position:  function(event, from, to) { log("START   EVENT: selected_position!",  true);  },
-      onbeforeevent_item: function(event, from, to) { log("START   EVENT: event_item!", true);  },
-      onbeforeend_turn:  function(event, from, to) { log("START   EVENT: end_turn!",  true);  },
-      onbeforerestart_turn: function(event, from, to) { log("START   EVENT: restart_turn!", true);  },
+      onbeforeselected_position:  function(event, from, to) { 
+        log("START   EVENT: selected_position!",  true);  
+         startTimer();
+         selectPosition();
+      },  
+      onbeforeevent_item: function(event, from, to) { 
+        log("START   EVENT: event_item!", true);  
+        processEventItem();
+      },
+      onbeforeend_turn:  function(event, from, to) { 
+        log("START   EVENT: end_turn!",  true);  
+        processEndTurn();
+      },
+      onbeforerestart_turn: function(event, from, to) { 
+        log("START   EVENT: restart_turn!", true);  
+        //processEndTurn();
+      },
       
-      onselected_position:        function(event, from, to) { log("FINISH  EVENT: selected_position!");         },
-      onevent_item:       function(event, from, to) { log("FINISH  EVENT: event_item!");        },
-      onend_turn:        function(event, from, to) { log("FINISH  EVENT: end_turn!");         },
-      onrestart_turn:       function(event, from, to) { log("FINISH  EVENT: restart_turn!");        },
+      onselected_position:        function(event, from, to) { 
+        log("FINISH  EVENT: selected_position!");         
+        GameState.event_item();  
+      },
+      onevent_item:       function(event, from, to) { 
+        log("FINISH  EVENT: event_item!");        
+
+        GameState.end_turn();  
+      },
+      onend_turn:        function(event, from, to) { 
+        log("FINISH  EVENT: end_turn!");         
+        GameState.restart_turn();  
+      },
+      onrestart_turn:       function(event, from, to) { 
+        log("FINISH  EVENT: restart_turn!");        
+        GameState.selected_position();   
+      },
       /*
       onleavegreen:  function(event, from, to) { log("LEAVE   STATE: green");  },
       onleaveyellow: function(event, from, to) { log("LEAVE   STATE: yellow"); },

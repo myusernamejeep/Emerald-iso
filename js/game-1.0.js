@@ -12,6 +12,7 @@ var nemesis = ['nemesis_blue','nemesis_brown','nemesis_green','nemesis_greenblue
 var blocks = ['block_yellow','block_purple','block_red','block_pink','block_lime','block_lightblue','block_greenblue','block_green','block_brown','block_blue','block'];
 var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_greenblue','teleport_lightblue','teleport_lime','teleport_pink','teleport_purple','teleport_red','teleport_yellow','teleport'];  
 var seleted_target = null;
+var can_seleted_target = false;
 var path_to_walk = [];
 var player_config = {
     p1: {
@@ -91,8 +92,25 @@ var nodes = [];
   }
   $('.timer').css('font-size', '80px');
 
+  function startTimer(){
+      timerSeconds = 3;
+      timerCurrent = 0;
+      timerFinish = new Date().getTime()+(timerSeconds*1000);
+      timer = setInterval( stopWatch ,50);
+  }
 
+  function selectPosition(){
+    can_seleted_target = true;
+    //seleted_target = null;
+  }
 
+  function processEventItem(){
+
+  }
+
+  function processEndTurn(){
+
+  }
   // Level properties:
   // . robotCount
   // . robotScoreTrigger
@@ -385,6 +403,11 @@ var nodes = [];
         
   // Handle mouse clicks on game area
   $('#screen').mousedown(function(e) {
+
+    if(!can_seleted_target){
+      return false;
+    }
+
     var p = fromScreen(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     var s = $('div[x="' + p.x + '"][y="' + p.y + '"][l="0"]');
 
@@ -729,11 +752,6 @@ var nodes = [];
       animationPlane();
 
 
-
-      timerSeconds = 3;
-      timerCurrent = 0;
-      timerFinish = new Date().getTime()+(timerSeconds*1000);
-      timer = setInterval( stopWatch ,50);
       // create the timer
       /*$('#demoTimer').polartimer({
        timerSeconds: 4,

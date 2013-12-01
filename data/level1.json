@@ -40,7 +40,7 @@
                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                 0, 51, 0, 0, 0, 0, 50, 62, 63, 64],
          "height":15,
          "name":"nemesis",
          "opacity":1,
@@ -137,6 +137,86 @@
          "spacing":0,
          "tileheight":144,
          "tilewidth":128
+        }, 
+        {
+         "firstgid":50,
+         "image":"IsoCubes_01.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"item",
+         "properties":
+            {
+                "yoffset":"-45",
+                "xoffset":"50"
+            },
+         "spacing":0,
+          "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":51,
+         "image":"IsoCubes_02.png",
+         "imageheight":32,
+         "imagewidth":32,
+         "margin":0,
+         "name":"item",
+         "properties":
+            {
+                "yoffset":"-45",
+                "xoffset":"50"
+            },
+         "spacing":0,
+          "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":62,
+         "image":"coin_gold.png",
+         "imageheight":32,
+         "imagewidth":256,
+         "margin":0,
+         "name":"item",
+         "properties":
+            {
+                "yoffset":"-64",
+                "xoffset":"50"
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":63,
+         "image":"coin_silver.png",
+         "imageheight":32,
+         "imagewidth":256,
+         "margin":0,
+         "name":"item",
+         "properties":
+            {
+                "yoffset":"-64",
+                "xoffset":"50"
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
+        }, 
+        {
+         "firstgid":64,
+         "image":"coin_copper.png",
+         "imageheight":32,
+         "imagewidth":256,
+         "margin":0,
+         "name":"item",
+         "properties":
+            {
+                "yoffset":"-64",
+                "xoffset":"50"
+            },
+         "spacing":0,
+         "tileheight":32,
+         "tilewidth":32
         }],
  "tilewidth":128,
  "version":1,

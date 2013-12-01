@@ -9,7 +9,6 @@
   <meta name='viewport' content='width=device-width, initial-scale=1.0'>
   <link href='css/bootstrap-responsive.css' rel='stylesheet'>
  
-
   <link rel='stylesheet' type='text/css' href='css/style.css'>
 </head>
 
@@ -20,7 +19,38 @@
       <div unselectable='on' class='unselectable p2score'></div>
       <div id='robotCount' unselectable='on' class='unselectable'></div>
     </div>
+    <div id="plane1"></div>
+
+    <div class="redLaserRay">
+      <div class="redLaserRay1"></div>
+      <div class="redLaserRay2"></div>
+    </div>
+
+    <div class="greenLaserRay">
+      <div class="greenLaserRay1"></div>
+      <div class="greenLaserRay2"></div>
+    </div>
+    <div class="timer"></div><div class="timer fill"></div>
+
+    <div id="points" class="points"> 100 </div>
     <div id='level' unselectable='on' class='unselectable'></div>
+ 
+    <div id="demo" class='green'>
+
+      <h1> State of Game</h1>
+
+      <div id="controls">
+        <button id="selected_position" onclick="GameState.selected_position();">selected_position</button>
+        <button id="event_item"  onclick="GameState.event_item();">event_item</button>
+        <button id="end_turn"  onclick="GameState.end_turn();">end_turn</button>
+        <button id="restart_turn" onclick="GameState.restart_turn();">restart_turn!</button>
+      </div>
+   
+      <textarea id="output">
+      </textarea>
+
+    </div> 
+   
     <div id='progress' unselectable='on' class='unselectable progress progress-success progress-striped active'>
       <div id='progress-bar' unselectable='on' class='unselectable bar' style='width: 0%'></div>
     </div>
@@ -29,15 +59,24 @@
 
   <!-- would be nice to use application/javascript but that does not work with IE8 -->
   <script type='text/javascript' src='js/jquery-1.7.1.min.js'></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+
   <script type='text/javascript' src='js/jquery.spritely-0.6.1.js'></script>
   <script type='text/javascript' src='js/underscore-min.js'></script>
-  
+  <script type='text/javascript' src='js/motio.min.js'></script>
+  <script type="text/javascript" src="js/jquery.path.js"></script>
+  <script type="text/javascript" src="js/state-machine.min.js"></script>
+  <script type="text/javascript" src="js/state.js"></script> 
+  <script type="text/javascript" src="js/jquery.polartimer.js"></script>
+  <script type='text/javascript' src='js/particles.js'></script>
   <script type='text/javascript' src='js/soundmanager2-nodebug-jsmin.js'></script>
   <script type="text/javascript" src="js/PxLoader.js"></script>
   <script type="text/javascript" src="js/PxLoaderImage.js"></script> 
   <script type="text/javascript" src="js/PxLoaderSound.js"></script> 
   <script type='text/javascript' src='js/astar.js'></script>
   <script type='text/javascript' src='js/graph.js'></script>
+  <script type="text/javascript" src="js/game.anim.utils.js"></script>
   <script type='text/javascript' src='js/game-1.0.js'></script>
+ 
 </body>
 </html>

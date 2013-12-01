@@ -46,18 +46,52 @@ var player_config = {
     }
   };
 
+var ITEM_GID = 50;
+var ITEM_GID2 = 51;
+var nodes = [];
 (function(jQuery) {
 
   "use strict";
 
   $ = jQuery;
 
+  
+
   var NEMESIS_GID = 7;
   var TELEPORT_GID = 6;
   var CAPTION_LENGTH = 5000;
   
 
-  
+  var timer;
+  var timerCurrent;
+  var timerFinish;
+  var timerSeconds;
+  function drawTimer(percent){
+    $('div.timer').html('<div class="percent"></div><div id="slice"'+(percent > 50?' class="gt50"':'')+'><div class="pie"></div>'+(percent > 50?'<div class="pie fill"></div>':'')+'</div>');
+    var deg = 360/100*percent;
+    $('#slice .pie').css({
+      '-moz-transform':'rotate('+deg+'deg)',
+      '-webkit-transform':'rotate('+deg+'deg)',
+      '-o-transform':'rotate('+deg+'deg)',
+      'transform':'rotate('+deg+'deg)'
+    });
+    $('.percent').html(Math.round(percent)+'%');
+  }
+  function stopWatch(){
+    var seconds = (timerFinish-(new Date().getTime()))/1000;
+    if(seconds <= 0){
+      drawTimer(100);
+      clearInterval(timer);
+      $('input[type=button]#watch').val('Start');
+      console.log('Finished counting down from '+timerSeconds);
+    }else{
+      var percent = 100-((seconds/timerSeconds)*100);
+      drawTimer(percent);
+    }
+  }
+  $('.timer').css('font-size', '80px');
+
+
 
   // Level properties:
   // . robotCount
@@ -115,12 +149,16 @@ var player_config = {
         var x = 0;
         var y = 0;
         var yoffset = 0;
+        var xoffset = 0;
         if (typeof tileset['properties']['yoffset'] != 'undefined') {
           yoffset = parseInt(tileset['properties']['yoffset']);
         }
+        if (typeof tileset['properties']['xoffset'] != 'undefined') {
+          xoffset = parseInt(tileset['properties']['xoffset']);
+        }
         while (true) {
           api['gids'][gid] = {'width':tileWidth, 'height':tileHeight,
-            'top':y, 'left':x, 'yoffset':yoffset};
+            'top':y, 'left':x, 'yoffset':yoffset, 'xoffset':xoffset};
           stylesheet += (' .gid' + gid +
             " { background-image: url('" + image_path + tileset['image'] +
             "'); width: " + tileWidth +
@@ -142,6 +180,22 @@ var player_config = {
       $('<style id="style">' + stylesheet + '</style>').appendTo('head');
       console.log('gid', gid, stylesheet );
           
+      var data = api['layers'][0].data;
+      var count = 0;
+      var nodeRow = [];
+      
+      for(var x=0;x<data.length ;x++) {
+        count ++;
+        var _grid_data = data[x] > 0 ? 1: 0;
+
+        nodeRow.push(_grid_data);
+        if (count == api['layers'][0].width){
+          nodes.push(nodeRow);
+          count = 0;
+          nodeRow = [];
+        }
+
+      }
       // Create div element for each map entity
       for (var layer = 0; layer < api['layers'].length; ++layer) {
         var data = api['layers'][layer].data;
@@ -176,7 +230,7 @@ var player_config = {
       //console.log('addObject', gid);
       var dims = api['gids'][gid];
       var p = toScreen(x, y);
-      var X = p.x;
+      var X = p.x + dims['xoffset']; 
       var Y = p.y - (dims['height'] - api['tH']) + dims['yoffset'];
       var id = 'l' + layer + 'x' + x + 'y' + y + 'o' + api['objectCount'];
       api['objectCount']++;
@@ -186,7 +240,48 @@ var player_config = {
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 
+      if(gid>61){
+        // coins 3 
+        // 62 - 64
+           _id.css('backgroundImage', "url(../images/coin_"+ (61 == gid?'gold':(62 == gid?'silver':'copper')) +".png) !important;"); 
+           _id.css('backgroundPosition', '0 0  !important;');
+           _id.attr('xv','1').attr('yv','1')
+            .sprite({fps: 8, no_of_frames: 8})
+            .removeClass(blockd_class);
+          _id.attr('value','100').attr('color','yellow');
+          _id.addClass('coins');
+          _id.addClass('items');
+
+        return;
+
+      }else if(gid>=50){
+        // boxes color 11
+        // 51 - 61
+        var no = (Math.random() * 11).toFixed(0);
+           _id.css('backgroundImage', "url(../images/IsoCubes_"+ (no < 10 ? '0'+no:no) +".png) !important;"); 
+           _id.css('backgroundPosition', '0 0  !important;');
+           _id.removeClass(blockd_class);
+           _id.addClass('boxes');
+           _id.attr('value','200').attr('color','red');
+           _id.addClass('items');
+
+        return;
+
+      }else{
+
+      } 
+
       switch(gid){
+    
+        case ITEM_GID:
+        case ITEM_GID2:
+           var no = (Math.random() * 11).toFixed(0);
+           _id.css('backgroundImage', "url(../images/IsoCubes_"+ (no < 10 ? '0'+no:no) +".png) !important;"); 
+           _id.css('backgroundPosition', '0 0  !important;');
+           _id.removeClass(blockd_class);
+           //.sprite({fps: 6, no_of_frames: 6});
+          
+          break; 
 
         case player_config.p1.NEMESIS_GID:
 
@@ -195,7 +290,8 @@ var player_config = {
           .sprite({fps: 6, no_of_frames: 6});
           //.animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
           _id.addClass(nemesis_class);
-
+          _id.addClass('p1');
+          _id.addClass('player');
           break;
 
         case player_config.p2.NEMESIS_GID:
@@ -205,7 +301,8 @@ var player_config = {
           .sprite({fps: 6, no_of_frames: 6});
           //.animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
           _id.addClass(nemesis_class);
-          
+          _id.addClass('p2');
+          _id.addClass('player');
           break;  
 
         case NEMESIS_GID:
@@ -261,45 +358,91 @@ var player_config = {
     return {x:XT, y:YT};
   }
 
+  function createElementExplode(gid, x, y) {
+    //
+    var dims = api['gids'][gid];
+    if (gid == undefined){
+      return false;
+    }
+    //console.log( 'gid ', gid );
+
+    var p = toScreen(x, y);
+    var X = p.x - 64; 
+    var Y = p.y - (dims['height'] - api['tH']) - 64;
+
+    var canvas_ex = $('<div class="explode" width="64" height="64" style="top:' + Y + 'px; left:' + X + 'px;"  ></canvas>');
+    $('body').append(canvas_ex);
+    canvas_ex.css({
+      left : x,
+      top : y,
+      'position' : 'absolute',
+      'z-index' : 50,
+      'opacity' : 1
+    }).hide();
+
+    return canvas_ex;
+  }
+        
   // Handle mouse clicks on game area
   $('#screen').mousedown(function(e) {
     var p = fromScreen(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     var s = $('div[x="' + p.x + '"][y="' + p.y + '"][l="0"]');
-    if (s.hasClass('gid2')) {
-      s.removeClass('gid2');
-      s.addClass('gid3');
-    } else if (s.hasClass('gid3')) {
-      s.removeClass('gid3');
-      s.addClass('gid4');
-    } else if (s.hasClass('gid4')) {
-      s.removeClass('gid4');
-      s.addClass('gid5');
-    } else if (s.hasClass('gid5')) {
-      s.removeClass('gid5');
-      s.addClass('gid2');
+
+    if (!seleted_target){
+      if (s.hasClass('gid2')) {
+        s.removeClass('gid2');
+        s.addClass('gid3');
+      } else if (s.hasClass('gid3')) {
+        s.removeClass('gid3');
+        s.addClass('gid4');
+      } else if (s.hasClass('gid4')) {
+        s.removeClass('gid4');
+        s.addClass('gid5');
+      } else if (s.hasClass('gid5')) {
+        s.removeClass('gid5');
+        s.addClass('gid2');
+      }
+    }
+
+    if (seleted_target){
+      // show explode effect
+ 
+      var posX = e.pageX - this.offsetLeft;
+      var posY = e.pageY - this.offsetTop;
+      var gid = s.attr('gid');
+      var radious = 2;
+      var target_explosion = getStraitLineExplosion(radious, p);
+      // create anim elements
+      var dropMissile = function(){
+        for(var i=0;i<target_explosion.length;i++) {
+          var ex = target_explosion[i];
+          var time_to_start = Math.random() * 250;
+          var _s = $('div[x="' + ex[0] + '"][y="' + ex[1] + '"][l="0"]');
+          var screenCoor = toScreen(ex[0], ex[1]);
+          var el = createElementExplode(_s.attr('gid'), screenCoor.x , screenCoor.y );
+          
+          //dropBombAnimation(_s.attr('gid'), screenCoor.x , screenCoor.y , el);
+          
+          dropItemAnimation(_s.attr('gid'), screenCoor.x , screenCoor.y , el);
+
+
+          //animExplode(el);
+        } 
+        //var screenCoor = toScreen(p.x, p.y);
+        //laserRayAnimation( gid, screenCoor.x , screenCoor.y , 'red' );
+
+      }
+
+      //animationPlane(dropMissile);
+      
+      //var screenCoor = toScreen(p.x, p.y);
+      //animPoint(screenCoor.x , screenCoor.y);
     }
 
     if(seleted_target && ( seleted_target.attr('x')  != p.x || seleted_target.attr('y')  != p.y) ){
       //go to this point.
       resetTrial();
-      
-      var data = api['layers'][0].data;
-      var count = 0;
-      var nodeRow = [];
-      var nodes = [];
-      for(var x=0;x<data.length ;x++) {
-        count ++;
-        var _grid_data = data[x] > 0 ? 1: 0;
 
-        nodeRow.push(_grid_data);
-        if (count == api['layers'][0].width){
-          nodes.push(nodeRow);
-          count = 0;
-          nodeRow = [];
-        }
-
-      }
-      //console.log( 'nodes ', nodes );
       var graph = new Graph(nodes);
       var start = graph.nodes[seleted_target.attr('y')][seleted_target.attr('x')];
       //console.log( 'start', start);
@@ -369,10 +512,34 @@ var player_config = {
     seleted_target.attr('x', current_x ).attr('y', current_y)
     .attr('xv',xv ).attr('yv',yv).spState(state)
     //.animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
-    .animate({top:Y  + 'px',left:X + 'px'}, api['robotSpeed'], 'linear', walkTrial);
-    
+    .animate({top:Y  + 'px',left:X + 'px'}, api['robotSpeed'], 'linear', function(){
+      // check is stop
+      walkTrial();
+      var item_unit = $('div[x="' + current_x + '"][y="' + current_y + '"][l="1"]');
+      var screenCoor = toScreen(current_x, current_y);
+          
+      if(path_to_walk.length == 0){
+        console.log(item_unit);
+        /*if (item_unit.hasClass('items')){
+          // pick items
+        }else */if (item_unit.hasClass('coins')){
+          // pick coins
+          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));  
+        }else if (item_unit.hasClass('boxes')){
+          // pick boxes
+          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));
+        }
+        if(item_unit)
+          fadeHideUnit(item_unit);
+      }
+    });
+     
+  }
 
-      
+  function fadeHideUnit(item_unit){
+    item_unit.filter('.items').delay(300).animate({opacity:0}, 500, 'linear', function(){
+        $(this).remove();
+    });
   }
 
   // called when robot at edge of new square
@@ -555,10 +722,30 @@ var player_config = {
 
     // use timer to get around the elements not there before rendering.
     safeTimeout(addNewRobot, 1000);
-
+ 
     safeTimeout(function(){
       addNewPlayerCharacter('p1'); 
       addNewPlayerCharacter('p2'); 
+      animationPlane();
+
+
+
+      timerSeconds = 3;
+      timerCurrent = 0;
+      timerFinish = new Date().getTime()+(timerSeconds*1000);
+      timer = setInterval( stopWatch ,50);
+      // create the timer
+      /*$('#demoTimer').polartimer({
+       timerSeconds: 4,
+       color: '#F00',
+       opacity: 0.7,
+       callback: function () {
+        console.log('jquery.polartimer.js: done!');
+       }
+      });
+
+      // start the timer
+      $('#demoTimer').polartimer('start');*/
     }, 1000);
    
   }
@@ -670,7 +857,7 @@ var player_config = {
 
     loader.addCompletionListener(function() { 
       $('#credit').hide();
-      soundManager.play('EmeraldStarlight', {loops:9999});
+      //soundManager.play('EmeraldStarlight', {loops:9999});
       safeTimeout(function() { introScreen(0); }, 1000);
     }); 
 
@@ -703,7 +890,7 @@ var player_config = {
     }else if (r > 0){
       bg_dir = 'left';
     }
-    $('#screen').pan({fps: 30, speed: 1, dir: bg_dir || 'left' });
+    //$('#screen').pan({fps: 30, speed: 1, dir: bg_dir || 'left' });
   }
 
   // Start the game once everything is loaded

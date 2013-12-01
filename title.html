@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  dir="ltr">
+<head>	
+
+	<title>Create Spinning Rays with CSS3: Revisited Example</title>
+	<meta name="description" content="Last December I wrote a blog post titled Create Spinning Rays with CSS3 Animations &amp; JavaScript where I explained how easy it was to create a spinning rays animation with a bit of CSS and JavaScript.  The post became quite popular so I thought I'd take some time to look at it and improve it.  It occurred to me that one solution I didn't present was a much lighter solution;  a solution that required only CSS!" />
+	<!--[if lt IE 9]>
+	<script src="/wp-content/themes/jack/js/lib/html5shiv/src/html5shiv.js?{{ themeVersion }}"></script>
+<![endif]-->
+ 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.transit.min.js"></script>
+ <style>
+		
+		@-webkit-keyframes spin {
+			from {
+				-webkit-transform: rotate(0deg);
+			}
+			to {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+		
+		@-moz-keyframes spin {
+			from {
+				-moz-transform: rotate(0deg);
+			}
+			to {
+				-moz-transform: rotate(360deg);
+			}
+		}
+		
+		@-ms-keyframes spin {
+			from {
+				-ms-transform: rotate(0deg);
+			}
+			to {
+				-ms-transform: rotate(360deg);
+			}
+		}
+		
+		#raysDemoHolder	{ 
+			position: relative; 
+			width: 490px; 
+			height: 490px; 
+			margin: 100px 0 0 200px; 
+		}
+		#raysLogo { 
+			width: 300px; 
+			height: 233px; 
+			text-indent: -3000px; 
+			background: url(http://davidwalsh.name/wp-content/themes/2k11/images/homeLogo.png) 0 0 no-repeat; 
+			display: block; 
+			position: absolute; 
+			top: 0; 
+			left: 0; 
+			z-index: 2; 
+		}
+		#greenLaserRay{
+			background: transparent url(images/greenLaserRay.png);/*  no-repeat fixed center;*/
+			position: absolute; 
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			width: 300px; 
+			height: 74px; 
+			top: 200px; 
+			left:  100px; 
+			z-index: 51; 
+			/*transform:rotate(-30deg);
+			-ms-transform:rotate(-30deg); 
+			-webkit-transform:rotate(-30deg); */ 
+		} 
+		#rays	{ 
+			background: url(http://davidwalsh.name/wp-content/themes/2k11/images/rays-main.png) 0 0 no-repeat; 
+			position: absolute; 
+			top: -100px; 
+			left: -100px; 
+			width: 490px; 
+			height: 490px; 
+			-webkit-animation-name: spin; 
+			-webkit-animation-duration: 40000ms; /* 40 seconds */
+			-webkit-animation-iteration-count: infinite; 
+			-webkit-animation-timing-function: linear;
+			
+			-moz-animation-name: spin; 
+			-moz-animation-duration: 40000ms; /* 40 seconds */
+			-moz-animation-iteration-count: infinite; 
+			-moz-animation-timing-function: linear;
+			
+			-ms-animation-name: spin; 
+			-ms-animation-duration: 40000ms; /* 40 seconds */
+			-ms-animation-iteration-count: infinite; 
+			-ms-animation-timing-function: linear;
+			
+			/* boooo opera */
+			-o-transition: rotate(3600deg); /* works */
+		}
+		
+		#rays:hover {
+			/* -webkit-animation-duration: 10000ms; 10 seconds - speed it up on hover! */
+		}
+		
+	</style>
+</head>
+<body>
+ 
+<!-- Add the HTML header -->
+<div id="page">
+
+<a name="top" id="top"></a>
+
+<!-- header -->
+<header><div class="centerSite">
+
+ 
+	<div class="centerSite"><a href="/" class="headerTitle">The David Walsh Blog</a></div>
+	</div></header>
+
+<!-- holds content, will be frequently changed -->
+<div id="contentHolder">
+
+	<!-- start the left section if not the homepage -->
+	<section class="left">
+<h1>Create Spinning Rays with CSS3: Revisited</h1>
+<div class="p">Read <a href="http://davidwalsh.name/css-spin-revisited" target="_top">Create Spinning Rays with CSS3: Revisited</a></div>
+<div id="promoNode"></div>	
+	<p>Check out the spinning rays below; they're created using only CSS!</p>
+	
+	<div id="raysDemoHolder">
+		<a href="/" id="raysLogo">David Walsh Blog</a>
+		<div id="rays"></div>
+	</div>
+	
+	<div id="greenLaserRay"></div>
+		
+</section>
+ <script type="text/javascript">
+ $('#greenLaserRay').transition({
+  //perspective: '100px',
+  rotate: '-30deg'
+});
+ </script>
+</body>
+</html>

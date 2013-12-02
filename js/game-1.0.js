@@ -14,6 +14,9 @@ var teleports = ['teleport_blue','teleport_brown','teleport_green','teleport_gre
 var seleted_target = null;
 var can_seleted_target = false;
 var path_to_walk = [];
+var game_state = "init"; 
+var current_turn = 0;
+var grid_data = []; 
 var player_config = {
     p1: {
       color : 'yellow',
@@ -29,6 +32,7 @@ var player_config = {
       xv : 1,
       yv : 1,
       state : 4 ,
+      isBot : 1,   
     },
     p2 : {
       color : 'red',
@@ -44,6 +48,7 @@ var player_config = {
       xv : -1,
       yv : 1, 
       state : 2,   
+      isBot : 1,   
     }
   };
 
@@ -63,54 +68,8 @@ var nodes = [];
   var CAPTION_LENGTH = 5000;
   
 
-  var timer;
-  var timerCurrent;
-  var timerFinish;
-  var timerSeconds;
-  function drawTimer(percent){
-    $('div.timer').html('<div class="percent"></div><div id="slice"'+(percent > 50?' class="gt50"':'')+'><div class="pie"></div>'+(percent > 50?'<div class="pie fill"></div>':'')+'</div>');
-    var deg = 360/100*percent;
-    $('#slice .pie').css({
-      '-moz-transform':'rotate('+deg+'deg)',
-      '-webkit-transform':'rotate('+deg+'deg)',
-      '-o-transform':'rotate('+deg+'deg)',
-      'transform':'rotate('+deg+'deg)'
-    });
-    $('.percent').html(Math.round(percent)+'%');
-  }
-  function stopWatch(){
-    var seconds = (timerFinish-(new Date().getTime()))/1000;
-    if(seconds <= 0){
-      drawTimer(100);
-      clearInterval(timer);
-      $('input[type=button]#watch').val('Start');
-      console.log('Finished counting down from '+timerSeconds);
-    }else{
-      var percent = 100-((seconds/timerSeconds)*100);
-      drawTimer(percent);
-    }
-  }
-  $('.timer').css('font-size', '80px');
 
-  function startTimer(){
-      timerSeconds = 3;
-      timerCurrent = 0;
-      timerFinish = new Date().getTime()+(timerSeconds*1000);
-      timer = setInterval( stopWatch ,50);
-  }
-
-  function selectPosition(){
-    can_seleted_target = true;
-    //seleted_target = null;
-  }
-
-  function processEventItem(){
-
-  }
-
-  function processEndTurn(){
-
-  }
+  
   // Level properties:
   // . robotCount
   // . robotScoreTrigger
@@ -218,9 +177,13 @@ var nodes = [];
       for (var layer = 0; layer < api['layers'].length; ++layer) {
         var data = api['layers'][layer].data;
         for (var x = 0; x < api['width']; ++x) {
+          grid_data[x] = [];
           for (var y = 0; y < api['height']; ++y) {
             var gid = data[y * api['width'] + x];
-            addObject(target, layer, x, y, gid);
+          
+            var block_class = blocks[(Math.random() * blocks.length).toFixed(0)];
+            grid_data[x].push( block_class );
+            addObject(target, layer, x, y, gid, block_class);
           }
         }
       }
@@ -228,7 +191,23 @@ var nodes = [];
       // sync GUI
       $('#robotCount').text(api['robotCount']);
       $('#score').text(api['score']);
+
+
     });
+  }
+
+  function updateBlockClass(){
+    var tmp;
+    for (var x = 0; x < grid_data.length; ++x) {
+      if (x+1 < grid_data.length && x >0){
+        grid_data[x] = tmp;
+      }
+      tmp = grid_data[x];
+    }
+    for (var y = 0; y < grid_data[0].length; ++y) {
+      var block_class = blocks[(Math.random() * blocks.length).toFixed(0)];
+      grid_data[0].push(block_class);
+    }
   }
 
   // Object attrs
@@ -241,7 +220,7 @@ var nodes = [];
   //
   // Object classes
   // . gidN tileset gid N
-  function addObject(target, layer, x, y, gid) {
+  function addObject(target, layer, x, y, gid, blockd_class) {
     // TODO somekind of z ordering sort is required.
     if (0 != gid) {
 
@@ -252,9 +231,9 @@ var nodes = [];
       var Y = p.y - (dims['height'] - api['tH']) + dims['yoffset'];
       var id = 'l' + layer + 'x' + x + 'y' + y + 'o' + api['objectCount'];
       api['objectCount']++;
-      var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
+      //var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
       
-      target.append("<div id='" + id + "' class='gid" + gid + " "+ blockd_class +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      target.append("<div id='" + id + "' class='gid" + gid + " "+ (blockd_class || "") +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 
@@ -481,89 +460,7 @@ var nodes = [];
  
   });
 
-  function resetTrial(){
-    path_to_walk = [];
-  }
 
-  function walkTrial(){
-    if(path_to_walk.length <= 0){
-      return false;
-    }
-    var walk_grid = _.first(path_to_walk);
-    path_to_walk = _.rest(path_to_walk);
-    var current_y = walk_grid.x;
-    var current_x = walk_grid.y;
-
-    //var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
-    var state, xv, yv;
-    var diffX = current_x - seleted_target.attr('x');// <= 0 ?  -1:1;  // 1 , 0 leftt  // 0 , 1 up
-    var diffY = current_y - seleted_target.attr('y');// <= 0 ?  -1:1;
-    //console.log( 'diffX', diffX , 'diffY', diffY );
-    if(diffX == 0){
-      diffX = seleted_target.attr('xv');
-    }
-    if(diffY == 0){
-      diffY = seleted_target.attr('yv');
-    }
-
-    if (diffX == -1 && diffY == 1) { // up
-      xv = -1;
-      yv = 1;
-      state = 2;
-    } else if (diffX == -1 && diffY == -1) { // left 
-      xv = -1;
-      yv = -1;
-      state = 3;
-    } else if (diffX == 1 && diffY == -1) { // down
-      xv = 1;
-      yv = -1;
-      state = 4;
-    } else if (diffX == 1 && diffY == 1) { // right
-      xv = 1;
-      yv = 1;
-      state = 1;
-    }
-    //console.log( 'path_to_walk', path_to_walk, 'state', state, ' xv, yv',  xv, yv, 'walk_grid', walk_grid, 'seleted_target', seleted_target);
-    //console.log( 'e', walk_grid , seleted_target.attr('x'),seleted_target.attr('y'),current_x,current_y, "dif x ", seleted_target.attr('x') - current_x , "dif y",seleted_target.attr('y') - current_y );
-    var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
-    var gid = e.attr('gid');
-    var dims = api['gids'][gid];
-    var p = toScreen(walk_grid.y, walk_grid.x);
-    var X = p.x;
-    var Y = p.y - (dims['height'] - api['tH']) - 15;// + dims['yoffset'];
-    //console.log( X, Y , p);
-    seleted_target.attr('x', current_x ).attr('y', current_y)
-    .attr('xv',xv ).attr('yv',yv).spState(state)
-    //.animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
-    .animate({top:Y  + 'px',left:X + 'px'}, api['robotSpeed'], 'linear', function(){
-      // check is stop
-      walkTrial();
-      var item_unit = $('div[x="' + current_x + '"][y="' + current_y + '"][l="1"]');
-      var screenCoor = toScreen(current_x, current_y);
-          
-      if(path_to_walk.length == 0){
-        console.log(item_unit);
-        /*if (item_unit.hasClass('items')){
-          // pick items
-        }else */if (item_unit.hasClass('coins')){
-          // pick coins
-          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));  
-        }else if (item_unit.hasClass('boxes')){
-          // pick boxes
-          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));
-        }
-        if(item_unit)
-          fadeHideUnit(item_unit);
-      }
-    });
-     
-  }
-
-  function fadeHideUnit(item_unit){
-    item_unit.filter('.items').delay(300).animate({opacity:0}, 500, 'linear', function(){
-        $(this).remove();
-    });
-  }
 
   // called when robot at edge of new square
   function walkAtEdge() {
@@ -725,6 +622,7 @@ var nodes = [];
       console.log('addNewPlayerCharacter', p, robot);
   }
 
+
   function removePreviousLevel() {
 
     // remove robots
@@ -765,7 +663,9 @@ var nodes = [];
       // start the timer
       $('#demoTimer').polartimer('start');*/
     }, 1000);
-   
+
+    fsm.start();
+
   }
 
   function gameOver() {/*

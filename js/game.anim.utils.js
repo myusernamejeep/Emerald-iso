@@ -1,4 +1,89 @@
+  function resetTrial(){
+    path_to_walk = [];
+  }
 
+  function walkTrial(){
+    if(path_to_walk.length <= 0){
+      return false;
+    }
+    var walk_grid = _.first(path_to_walk);
+    path_to_walk = _.rest(path_to_walk);
+    var current_y = walk_grid.x;
+    var current_x = walk_grid.y;
+
+    //var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
+    var state, xv, yv;
+    var diffX = current_x - seleted_target.attr('x');// <= 0 ?  -1:1;  // 1 , 0 leftt  // 0 , 1 up
+    var diffY = current_y - seleted_target.attr('y');// <= 0 ?  -1:1;
+    //console.log( 'diffX', diffX , 'diffY', diffY );
+    if(diffX == 0){
+      diffX = seleted_target.attr('xv');
+    }
+    if(diffY == 0){
+      diffY = seleted_target.attr('yv');
+    }
+
+    if (diffX == -1 && diffY == 1) { // up
+      xv = -1;
+      yv = 1;
+      state = 2;
+    } else if (diffX == -1 && diffY == -1) { // left 
+      xv = -1;
+      yv = -1;
+      state = 3;
+    } else if (diffX == 1 && diffY == -1) { // down
+      xv = 1;
+      yv = -1;
+      state = 4;
+    } else if (diffX == 1 && diffY == 1) { // right
+      xv = 1;
+      yv = 1;
+      state = 1;
+    }
+    //console.log( 'path_to_walk', path_to_walk, 'state', state, ' xv, yv',  xv, yv, 'walk_grid', walk_grid, 'seleted_target', seleted_target);
+    //console.log( 'e', walk_grid , seleted_target.attr('x'),seleted_target.attr('y'),current_x,current_y, "dif x ", seleted_target.attr('x') - current_x , "dif y",seleted_target.attr('y') - current_y );
+    var e = $('div[x="' + current_x + '"][y="' + current_y + '"][l="0"]');
+    var gid = e.attr('gid');
+    var dims = api['gids'][gid];
+    var p = toScreen(walk_grid.y, walk_grid.x);
+    var X = p.x;
+    var Y = p.y - (dims['height'] - api['tH']) - 15;// + dims['yoffset'];
+    //console.log( X, Y , p);
+    seleted_target.attr('x', current_x ).attr('y', current_y)
+    .attr('xv',xv ).attr('yv',yv).spState(state)
+    //.animate({top:'+=' + xv * 32 + 'px',left:'+=' + 64 * yv + 'px'}, api['robotSpeed'], 'linear', walkTrial);
+    .animate({top:Y  + 'px',left:X + 'px'}, api['robotSpeed'], 'linear', function(){
+      // check is stop
+      walkTrial();
+      var item_unit = $('div[x="' + current_x + '"][y="' + current_y + '"][l="1"]');
+      var screenCoor = toScreen(current_x, current_y);
+          
+      if(path_to_walk.length == 0){
+        console.log(item_unit);
+        /*if (item_unit.hasClass('items')){
+          // pick items
+        }else */if (item_unit.hasClass('coins')){
+          // pick coins
+          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));  
+        }else if (item_unit.hasClass('boxes')){
+          // pick boxes
+          animPoint(screenCoor.x , screenCoor.y, item_unit.attr('value'), item_unit.attr('color'));
+        }
+        if(item_unit)
+          fadeHideUnit(item_unit);
+        
+        current_turn++;
+        change_player_position();
+      }
+    });
+     
+  }
+
+  function fadeHideUnit(item_unit){
+    item_unit.filter('.items').delay(300).animate({opacity:0}, 500, 'linear', function(){
+        $(this).remove();
+    });
+  }
   
   function animationPlane(cb){
     $('#plane1').show().sprite({fps: 12, no_of_frames: 2}).spRandom({
@@ -207,7 +292,7 @@
         //}
       }
     }
-    console.log( target_explosion );
+    console.log( target_explosion, p.x, p.y );
 
     return target_explosion;
   }

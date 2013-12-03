@@ -32,7 +32,8 @@ var player_config = {
       xv : 1,
       yv : 1,
       state : 4 ,
-      isBot : 1,   
+      isBot : 1,  
+      walk_radious : 2 
     },
     p2 : {
       color : 'red',
@@ -48,7 +49,8 @@ var player_config = {
       xv : -1,
       yv : 1, 
       state : 2,   
-      isBot : 1,   
+      isBot : 1,  
+      walk_radious : 2  
     }
   };
 
@@ -155,7 +157,7 @@ var nodes = [];
       }
       $('#style').remove();
       $('<style id="style">' + stylesheet + '</style>').appendTo('head');
-      console.log('gid', gid, stylesheet );
+      //console.log('gid', gid, stylesheet );
           
       var data = api['layers'][0].data;
       var count = 0;
@@ -181,34 +183,19 @@ var nodes = [];
           for (var y = 0; y < api['height']; ++y) {
             var gid = data[y * api['width'] + x];
           
-            var block_class = blocks[(Math.random() * blocks.length).toFixed(0)];
+            var block_class = blocks[(Math.random() * (blocks.length-1) ).toFixed(0)];
             grid_data[x].push( block_class );
             addObject(target, layer, x, y, gid, block_class);
           }
         }
       }
-
-      // sync GUI
+      console.log('grid_data', grid_data); 
       $('#robotCount').text(api['robotCount']);
       $('#score').text(api['score']);
-
-
+ 
     });
   }
 
-  function updateBlockClass(){
-    var tmp;
-    for (var x = 0; x < grid_data.length; ++x) {
-      if (x+1 < grid_data.length && x >0){
-        grid_data[x] = tmp;
-      }
-      tmp = grid_data[x];
-    }
-    for (var y = 0; y < grid_data[0].length; ++y) {
-      var block_class = blocks[(Math.random() * blocks.length).toFixed(0)];
-      grid_data[0].push(block_class);
-    }
-  }
 
   // Object attrs
   // . l N layer N
@@ -233,7 +220,7 @@ var nodes = [];
       api['objectCount']++;
       //var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
       
-      target.append("<div id='" + id + "' class='gid" + gid + " "+ (blockd_class || "") +"' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      target.append("<div id='" + id + "' class='gid" + gid +" " + (blockd_class && ((x == 0 && y == 0)||(x == api['width']-1 && y == api['height']-1))? blockd_class : "") +  "' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 
@@ -304,7 +291,7 @@ var nodes = [];
 
         case NEMESIS_GID:
 
-          var nemesis_class = nemesis[(Math.random() * nemesis.length).toFixed(0)];
+          var nemesis_class = nemesis[(Math.random() * (nemesis.length-1) ).toFixed(0)];
           _id.attr('xv','1').attr('yv','1')
           .sprite({fps: 6, no_of_frames: 6})
           .animate({top:'+=16px',left:'+=32px'}, api['robotSpeed'], 'linear', walkAtEdge);
@@ -313,7 +300,7 @@ var nodes = [];
 
         case TELEPORT_GID:   
 
-          var teleports_class = teleports[(Math.random() * teleports.length).toFixed(0)];
+          var teleports_class = teleports[(Math.random() * (teleports.length-1)).toFixed(0)];
           _id.addClass(teleports_class);
 
           break;
@@ -338,23 +325,7 @@ var nodes = [];
       return _id;
     }
   }
-
-  function toScreen(x, y) {
-    var X = x * api['hTW'] - y * api['hTH'] + api['xoffset'];
-    var Y = x * api['qTW'] + y * api['qTH'] + api['yoffset'];
-    return {x:X, y:Y};
-  }
-
-  function fromScreen(x, y) {
-    var X = x - api['xoffset'];
-    var Y = y - api['yoffset'];
-    var XT = Math.floor( (X/api['hTH'] + Y/api['qTH']) /
-      (api['hTW']/api['hTH'] + api['qTW']/api['qTH']) ) - 1;
-    var YT = Math.floor( (Y/api['qTW'] - X/api['hTW']) /
-      (api['qTH']/api['qTW'] + api['hTH']/api['hTW']) );
-    return {x:XT, y:YT};
-  }
-
+ 
   function createElementExplode(gid, x, y) {
     //
     var dims = api['gids'][gid];
@@ -662,9 +633,13 @@ var nodes = [];
 
       // start the timer
       $('#demoTimer').polartimer('start');*/
+
+      fsm.start();
+
     }, 1000);
 
-    fsm.start();
+    //start state
+    
 
   }
 

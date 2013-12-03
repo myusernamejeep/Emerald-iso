@@ -1,3 +1,54 @@
+  
+  function updateBlockClass(){
+    var tmp;
+    for (var x = 0; x < api['width']; ++x) {
+      if (x+1 < api['width'] && x >0){
+        grid_data[x] = tmp;
+      }
+      tmp = grid_data[x];
+    }
+    for (var y = 0; y < api['height']; ++y) {
+      var block_class = blocks[(Math.random() * (blocks.length - 1)).toFixed(0)];
+      grid_data[0].push(block_class);
+    }
+
+    console.log( 'updateBlockClass' , grid_data[0] );
+  }
+
+  function renderBlockClass(){
+    for (var x = 0; x < api['width']; x++) {
+      for (var y = 0; y < api['height']; y++) {
+        var class_of_block = grid_data[x][y];
+        var tmp_grid = $('div[x="' + x + '"][y="' + y + '"][l="0"]');
+ 
+        if ((x == 0 && y == 0)||(x == api['width']-1 && y == api['height']-1)) {
+          continue;
+        } 
+        tmp_grid.removeClass( tmp_grid.attr('class') );
+        tmp_grid.addClass(  'gid'+tmp_grid.attr('gid') );
+        tmp_grid.addClass( class_of_block );
+        console.log( 'gid', tmp_grid.attr('gid') , 'class_of_block', class_of_block , x , y );
+ 
+      }
+    }  
+  }
+
+  function toScreen(x, y) {
+    var X = x * api['hTW'] - y * api['hTH'] + api['xoffset'];
+    var Y = x * api['qTW'] + y * api['qTH'] + api['yoffset'];
+    return {x:X, y:Y};
+  }
+
+  function fromScreen(x, y) {
+    var X = x - api['xoffset'];
+    var Y = y - api['yoffset'];
+    var XT = Math.floor( (X/api['hTH'] + Y/api['qTH']) /
+      (api['hTW']/api['hTH'] + api['qTW']/api['qTH']) ) - 1;
+    var YT = Math.floor( (Y/api['qTW'] - X/api['hTW']) /
+      (api['qTH']/api['qTW'] + api['hTH']/api['hTW']) );
+    return {x:XT, y:YT};
+  }
+
   function resetTrial(){
     path_to_walk = [];
   }
@@ -57,9 +108,9 @@
       walkTrial();
       var item_unit = $('div[x="' + current_x + '"][y="' + current_y + '"][l="1"]');
       var screenCoor = toScreen(current_x, current_y);
-          
+      console.log(item_unit);
+            
       if(path_to_walk.length == 0){
-        console.log(item_unit);
         /*if (item_unit.hasClass('items')){
           // pick items
         }else */if (item_unit.hasClass('coins')){
@@ -72,7 +123,7 @@
         if(item_unit)
           fadeHideUnit(item_unit);
         
-        current_turn++;
+        current_player_position_turn++;
         change_player_position();
       }
     });
@@ -285,7 +336,7 @@
         //if((x-radious>=0 && x+radious<=nodes.length) && (y-radious>=0 && y+radious<=node_x.length)){
           if((Math.abs(p.x-x)>=0 && Math.abs(p.x-x)<=radious) && (Math.abs(p.y-y)>=0 && Math.abs(p.y-y)<=radious)){
             if(nodes[y][x] == 1){
-              console.log( x,y , nodes[y][x]);
+              //console.log( x,y , nodes[y][x]);
               target_explosion.push([x,y]);
             }
           }

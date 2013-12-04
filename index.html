@@ -10,15 +10,45 @@
   <link href='css/bootstrap-responsive.css' rel='stylesheet'>
  
   <link rel='stylesheet' type='text/css' href='css/style.css'>
+  <link rel='stylesheet' type='text/css' href='css/game.css'>
 </head>
 
 <body background='#000000'>
   <div id='screen' unselectable='on' class='unselectable'>
-    <div id='hud' unselectable='on' class='unselectable'>
+    <!--<div id='hud' unselectable='on' class='unselectable'>
       <div id='score' unselectable='on' class='unselectable p1score'></div>
       <div unselectable='on' class='unselectable p2score'></div>
       <div id='robotCount' unselectable='on' class='unselectable'></div>
+    </div>-->
+    
+    <div  id='p1' class="box">
+      <div class="pic" ><div class="userbox" ></div>
     </div>
+      <p><span class="user">Player1!</span></p>
+      <p class="user_stat">HP <span class="hp">100</span><span class="hp 80"></span></p>
+    </div>
+ 
+    <div  id='p2' class="box">
+      <div class="pic" ><div class="userbox" ></div>
+    </div>
+      <p><span class="user">Player2!</span></p>
+      <p class="user_stat">HP <span class="hp">100</span><span class="hp 80"></span></p>
+    </div>
+
+    <div  id='p3' class="box">
+      <div class="pic" ><div class="userbox" ></div>
+    </div>
+      <p><span class="user">Player3!</span></p>
+      <p class="user_stat">HP <span class="hp">100</span><span class="hp 80"></span></p>
+    </div>
+
+    <div  id='p4' class="box">
+      <div class="pic" ><div class="userbox" ></div>
+    </div>
+      <p><span class="user">Player4!</span></p>
+      <p class="user_stat">HP <span class="hp">100</span><span class="hp 80"></span></p>
+    </div>
+
     <div id="plane1"></div>
 
     <div class="redLaserRay">

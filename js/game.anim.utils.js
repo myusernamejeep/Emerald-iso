@@ -1,23 +1,18 @@
   
   function updateBlockClass(){
-    var tmp;
-    for (var x = 0; x < api['width']; ++x) {
-      if (x+1 < api['width'] && x >0){
-        grid_data[x] = tmp;
-      }
-      tmp = grid_data[x];
-    }
+    grid_data.splice(0,1);
+    var new_arr = [];
     for (var y = 0; y < api['height']; ++y) {
-      var block_class = blocks[(Math.random() * (blocks.length - 1)).toFixed(0)];
-      grid_data[0].push(block_class);
+      new_arr.push(blocks[(Math.random() * (blocks.length - 1)).toFixed(0)]);
     }
+    grid_data.push(new_arr);
 
     console.log( 'updateBlockClass' , grid_data[0] );
   }
 
   function renderBlockClass(){
-    for (var x = 0; x < api['width']; x++) {
-      for (var y = 0; y < api['height']; y++) {
+    for (var x = 0; x < api['width']; ++x) {
+      for (var y = 0; y < api['height']; ++y) {
         var class_of_block = grid_data[x][y];
         var tmp_grid = $('div[x="' + x + '"][y="' + y + '"][l="0"]');
  
@@ -27,7 +22,7 @@
         tmp_grid.removeClass( tmp_grid.attr('class') );
         tmp_grid.addClass(  'gid'+tmp_grid.attr('gid') );
         tmp_grid.addClass( class_of_block );
-        console.log( 'gid', tmp_grid.attr('gid') , 'class_of_block', class_of_block , x , y );
+        //console.log( 'gid', tmp_grid.attr('gid') , 'class_of_block', class_of_block , x , y );
  
       }
     }  
@@ -54,6 +49,8 @@
   }
 
   function walkTrial(){
+    console.log('path_to_walk', path_to_walk);
+  
     if(path_to_walk.length <= 0){
       return false;
     }
@@ -108,7 +105,7 @@
       walkTrial();
       var item_unit = $('div[x="' + current_x + '"][y="' + current_y + '"][l="1"]');
       var screenCoor = toScreen(current_x, current_y);
-      console.log(item_unit);
+      console.log('item_unit', item_unit);
             
       if(path_to_walk.length == 0){
         /*if (item_unit.hasClass('items')){
@@ -123,6 +120,7 @@
         if(item_unit)
           fadeHideUnit(item_unit);
         
+        console.log('path_to_walk.length == 0' );
         current_player_position_turn++;
         change_player_position();
       }

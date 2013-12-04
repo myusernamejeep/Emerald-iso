@@ -179,17 +179,23 @@ var nodes = [];
       for (var layer = 0; layer < api['layers'].length; ++layer) {
         var data = api['layers'][layer].data;
         for (var x = 0; x < api['width']; ++x) {
-          grid_data[x] = [];
+          if(layer == 0){
+            grid_data[x] = [];
+          }
           for (var y = 0; y < api['height']; ++y) {
             var gid = data[y * api['width'] + x];
           
-            var block_class = blocks[(Math.random() * (blocks.length-1) ).toFixed(0)];
-            grid_data[x].push( block_class );
+            if(layer == 0){
+              var block_class = blocks[(Math.random() * (blocks.length-1) ).toFixed(0)];
+              grid_data[x].push( block_class );
+            }else{
+              var block_class = "";
+            }
             addObject(target, layer, x, y, gid, block_class);
           }
         }
       }
-      console.log('grid_data', grid_data); 
+      //console.log('grid_data', grid_data); 
       $('#robotCount').text(api['robotCount']);
       $('#score').text(api['score']);
  
@@ -220,7 +226,7 @@ var nodes = [];
       api['objectCount']++;
       //var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
       
-      target.append("<div id='" + id + "' class='gid" + gid +" " + (blockd_class && ((x == 0 && y == 0)||(x == api['width']-1 && y == api['height']-1))? blockd_class : "") +  "' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      target.append("<div id='" + id + "' class='gid" + gid +" " + (blockd_class || "") +  "' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 

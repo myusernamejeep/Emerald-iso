@@ -4,9 +4,9 @@
     for (var x = 0; x < items_database.length; ++x) {
       var item = items_database[x];
 
-      var html = '<li class="flex-item" id="item'+ item.image +'" color="'+ item.color +'"  >'+
+      var html = '<li class="flex-item" id="item_'+ item.image +'" color="'+ item.color +'"  >'+
             '<div class="item_pic" >'+
-              '<img src="'+ item.image +'" />'+
+              '<img src="images/icons/"'+ item.image +'.png" />'+
             '</div>'+
             '<div class="info">'+
               '<h4>'+ item.name +'</h4>'+
@@ -58,7 +58,8 @@
     $(window).on('resize', function() {
         $frame.reload();
     });
-
+    var $wrap = $('.wrap');
+    $wrap.show();
   }
 
   function updateBlockClass(){
@@ -83,8 +84,15 @@
         } 
         tmp_grid.removeClass( tmp_grid.attr('class') );
         tmp_grid.addClass(  'gid'+tmp_grid.attr('gid') );
-        tmp_grid.addClass( class_of_block );
-        //console.log( 'gid', tmp_grid.attr('gid') , 'class_of_block', class_of_block , x , y );
+        tmp_grid.addClass(  'kiwi' );
+        var data_items = tmp_grid.data(  'item' );
+        tmp_grid.css('background', "url(images/icons/"+ data_items.image  +".svg) , url(images/"+ data_items.color  +".png) ");
+        tmp_grid.css('background-repeat',"no-repeat, no-repeat ");
+        tmp_grid.css('background-position',"50% 50%, 50% 10%");
+        tmp_grid.css('background-size',"30% ,auto ");
+     
+         //tmp_grid.addClass( class_of_block );
+        console.log( 'gid', tmp_grid.attr('gid') , 'class_of_block', class_of_block , x , y );
  
       }
     }  

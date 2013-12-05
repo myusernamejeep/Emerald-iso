@@ -4,7 +4,7 @@ var items_database = [{
 	name:'Random drop',
 	desciption:'Anvil drops to target randomly.',
 	value: 100,
-	image:'images/icons/anvil.png',
+	image:'anvil',
 	id:1,
 	color:'block_red'
 },
@@ -12,7 +12,7 @@ var items_database = [{
 	name:'aura',
 	desciption:'defend all attack.',
 	value: 0,
-	image:'images/icons/aura.png',
+	image:'aura',
 	id:2,
 	color:'block_lightblue'
 },
@@ -20,7 +20,7 @@ var items_database = [{
 	name:'bombing-run',
 	desciption:'Call plane for droping "bombing-run" to attack another player.',
 	value: 0,
-	image:'images/icons/bombing-run.png',
+	image:'bombing-run',
 	id:3,
 	color:'block_red'
 },
@@ -28,7 +28,7 @@ var items_database = [{
 	name:'hole-ladder',
 	desciption:'Warp player to another hole-ladder by randomly.',
 	value: 0,
-	image:'images/icons/hole-ladder.png',
+	image:'hole-ladder',
 	id:4,
 	color:'block_greenblue'
 },
@@ -36,7 +36,7 @@ var items_database = [{
 	name:'invisible',
 	desciption:'invisible player .',
 	value: 0,
-	image:'images/icons/invisible.png',
+	image:'invisible',
 	id:4,
 	color:'block_pink'
 },
@@ -44,7 +44,7 @@ var items_database = [{
 	name:'barefoot',
 	desciption:'Player can walk farther.',
 	value: 0,
-	image:'images/icons/barefoot.png',
+	image:'barefoot',
 	id:4,
 	color:'block_pink'
 },
@@ -52,7 +52,7 @@ var items_database = [{
 	name:'andromeda-chain',
 	desciption:'Player is chained. Cannot walk in turn.',
 	value: 0,
-	image:'images/icons/andromeda-chain.png',
+	image:'andromeda-chain',
 	id:4,
 	color:'block_yellow'
 },
@@ -60,7 +60,7 @@ var items_database = [{
 	name:'dice role',
 	desciption:'Role the dice. If point > 4 you win.',
 	value: 0,
-	image:'images/icons/perspective-dice-six-faces-one.png',
+	image:'perspective-dice-six-faces-one',
 	id:4,
 	color:'block_yellow'
 },
@@ -68,7 +68,7 @@ var items_database = [{
 	name:'shield',
 	desciption:'Defend all attack.',
 	value: 0,
-	image:'images/icons/checked-shield.png',
+	image:'checked-shield',
 	id:4,
 	color:'block_lightblue'
 },
@@ -76,7 +76,7 @@ var items_database = [{
 	name:'beams aura',
 	desciption:'Heal player.',
 	value: 100,
-	image:'images/icons/beams-aura.png',
+	image:'beams-aura',
 	id:4,
 	color:'block_green'
 },
@@ -84,7 +84,7 @@ var items_database = [{
 	name:'burning player',
 	desciption:'burning random player.',
 	value: 150,
-	image:'images/icons/burning-embers.png',
+	image:'burning-embers',
 	id:4,
 	color:'block_red'
 },
@@ -92,7 +92,7 @@ var items_database = [{
 	name:'burning player',
 	desciption:'burning random player.',
 	value: 150,
-	image:'images/icons/burning-embers.png',
+	image:'burning-embers',
 	id:4,
 	color:'block_red'
 },
@@ -100,7 +100,7 @@ var items_database = [{
 	name:'biohazard',
 	desciption:'Launch nuclear.',
 	value: 350,
-	image:'images/icons/biohazard.png',
+	image:'biohazard',
 	id:4,
 	color:'block_red'
 },

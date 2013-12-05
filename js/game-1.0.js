@@ -188,10 +188,12 @@ var nodes = [];
             if(layer == 0){
               var block_class = blocks[(Math.random() * (blocks.length-1) ).toFixed(0)];
               grid_data[x].push( block_class );
+              var item = items_database[(Math.random() * (items_database.length-1) ).toFixed(0)];
             }else{
               var block_class = "";
+              var item = "";
             }
-            addObject(target, layer, x, y, gid, block_class);
+            addObject(target, layer, x, y, gid, block_class, item);
           }
         }
       }
@@ -213,7 +215,7 @@ var nodes = [];
   //
   // Object classes
   // . gidN tileset gid N
-  function addObject(target, layer, x, y, gid, blockd_class) {
+  function addObject(target, layer, x, y, gid, blockd_class, item) {
     // TODO somekind of z ordering sort is required.
     if (0 != gid) {
 
@@ -226,10 +228,11 @@ var nodes = [];
       api['objectCount']++;
       //var blockd_class = blocks[(Math.random() * blocks.length).toFixed(0)];
       
-      target.append("<div id='" + id + "' class='gid" + gid +" " + (blockd_class || "") +  "' style='top:" + Y + "px; left:" + X + "px;'></div>");
+      target.append("<div id='" + id + "' class='gid" + 1 +" " + (blockd_class || "") +  "' style='top:" + Y + "px; left:" + X + "px;'></div>");
       var _id = $('#' + id);
       _id.attr('x', x).attr('y', y).attr('l', layer).attr('s', 1).attr('gid', gid);
 
+      _id.data('item',item);
       if(gid>61){
         // coins 3 
         // 62 - 64
@@ -725,6 +728,12 @@ var nodes = [];
     api['timeout'] = setTimeout(f, d);
   }
 
+  function titleCharater(){
+    $('#main').show();
+    $(".character1").sprite({fps: 6, no_of_frames: 6});
+    $(".character2").sprite({fps: 6, no_of_frames: 6});
+  }
+
   function start() {
     soundManager.url = './data'; 
     soundManager.flashVersion = 9; 
@@ -758,7 +767,8 @@ var nodes = [];
     loader.addCompletionListener(function() { 
       $('#credit').hide();
       //soundManager.play('EmeraldStarlight', {loops:9999});
-      renderMenuItemsInfo();
+      //renderMenuItemsInfo();
+      titleCharater();
       safeTimeout(function() { introScreen(0); }, 1000);
     }); 
 

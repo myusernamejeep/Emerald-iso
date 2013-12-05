@@ -67,7 +67,9 @@
   top: 550px;
   width: 94px;
 }
-
+.kiwi {
+  fill: #94d31b; 
+}
 .block_yellow {
   background-image: url(../images/block_yellow.png) !important; 
 }

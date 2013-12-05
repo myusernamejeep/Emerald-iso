@@ -28,7 +28,7 @@ body{
 }
 .box {
 	width: 200px;
-	
+	z-index: 500;
 	height: 60px;
 	-moz-border-radius: 30px;
 	-webkit-border-radius: 30px;
@@ -226,7 +226,8 @@ background: #eee;
 
 /* Example wrapper */
 .wrap {
- 
+ 	display: none;
+	
     position: relative;
     margin: 0px auto;
 	width: 666px;
@@ -394,3 +395,88 @@ background: #eee;
     -ms-transform: rotateY(-60deg) scale(0.9);
     transform: rotateY(-60deg) scale(0.9);
 }
+
+
+
+
+@-webkit-keyframes move {
+	0% { 
+		background-position: 0 0, 0 0, 0 0, 0 0, 0 0, left bottom, left top;
+	}		
+	100% { 
+		background-position: 80% 50%, 90% 10%, 10% 90%, 40% top, 45% 10%, left bottom, left top;
+	}
+}
+
+@-moz-keyframes move {
+	0% { 
+		background-position: 0 0, 0 0, 0 0, 0 0, 0 0, left bottom, left top;
+	}		
+	100% { 
+		background-position: 80% 50%, 90% 10%, 10% 90%, 40% top, 45% 10%, left bottom, left top;
+	}
+}
+
+@keyframes move {
+	0% { 
+		background-position: 0 0, 0 0, 0 0, 0 0, 0 0, left bottom, left top;
+	}		
+	100% { 
+		background-position: 80% 50%, 90% 10%, 10% 90%, 40% top, 45% 10%, left bottom, left top;
+	}
+}
+
+header#main {
+	display:none;
+	width: 100%;
+	height: 350px;		
+	overflow: hidden;
+	position: fixed;
+	background-image: url('../images/IsoCubes_01.png'), url('../images/IsoCubes_02.png'), url('../images/IsoCubes_03.png'), url('../images/IsoCubes_04.png'), url('../images/IsoCubes_05.png'), url('../images/IsoCubes_06.png'), url('../images/IsoCubes_07.png');
+	background-position: 80% 50%, 90% 10%, 10% 90%, 40% top, 45% 10%, left bottom, left top;
+	background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;			
+			
+	-webkit-animation: move 3s ease 1;
+	-moz-animation: move 3s ease 1;
+	animation: move 3s ease 1;
+}
+
+header#main h1 {
+	color: #ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+}
+
+header#main img.character1{
+	position: absolute;
+	left: 110%;
+	top: 50%;
+ 	width: 128px;
+	height: 144px;	
+	background-image: url(../images/nemesis_pink.png);
+	-webkit-transition: left 0.5s ease-in-out;
+	-moz-transition: left 0.5s ease-in-out;
+	-o-transition: left 0.5s ease-in-out;
+	transition: left 0.5s ease-in-out;			
+}
+
+header#main img.character2{
+	position: absolute;
+	left: 10%;
+	top: 110%;
+	width: 128px;
+	height: 144px;	
+	background-image: url(../images/nemesis_lightgreen.png);
+	-webkit-transition: top 1.5s ease-in-out;
+	-moz-transition: top 1.5s ease-in-out;
+	-o-transition: top 1.5s ease-in-out;
+	transition: top 1.5s ease-in-out;			
+}
+
+header#main:hover img.character1{				
+	left: 90%;
+}	
+
+header#main:hover img.character2{				
+	top: 50%;
+}	

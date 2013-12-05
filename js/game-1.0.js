@@ -703,6 +703,7 @@ var nodes = [];
       }
     }
     captionAnim(c);
+
   }
 
   function captionAnim(caption) {
@@ -757,6 +758,7 @@ var nodes = [];
     loader.addCompletionListener(function() { 
       $('#credit').hide();
       //soundManager.play('EmeraldStarlight', {loops:9999});
+      renderMenuItemsInfo();
       safeTimeout(function() { introScreen(0); }, 1000);
     }); 
 

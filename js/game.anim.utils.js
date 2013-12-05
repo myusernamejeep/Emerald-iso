@@ -1,4 +1,66 @@
   
+  function renderMenuItemsInfo(){
+    var htmls = "";
+    for (var x = 0; x < items_database.length; ++x) {
+      var item = items_database[x];
+
+      var html = '<li class="flex-item" id="item'+ item.image +'" color="'+ item.color +'"  >'+
+            '<div class="item_pic" >'+
+              '<img src="'+ item.image +'" />'+
+            '</div>'+
+            '<div class="info">'+
+              '<h4>'+ item.name +'</h4>'+
+              '<p class="item_desc">'+ item.desciption +'</p>'+
+            '</div>'+
+          '</li>';
+      htmls += html;
+    }
+    var $items_grid = $('#items_grid');
+    $items_grid.empty();  
+    $items_grid.append(htmls);    
+    var $frame = $('#frame');
+    //$frame.append('<ul class="pages" ></ul>'); 
+    var $slidee = $frame.children('ul').eq(0);
+    var $wrap = $frame.parent();
+
+    $frame.sly({
+            //horizontal: 1,
+            itemNav: 'basic',
+            smart: 1,
+            activateOn: 'click',
+            mouseDragging: 1,
+            touchDragging: 1,
+            releaseSwing: 1,
+            startAt: 3,
+            scrollBar: $('.scrollbar'),
+            //scrollBy: 1,
+            //pagesBar: $wrap.find('.pages'),
+            activatePageOn: 'click',
+            speed: 300,
+            elasticBounds: 1,
+            easing: 'easeOutExpo',
+            dragHandle: 1,
+            dynamicHandle: 1,
+            clickBar: 1,
+       
+            scrollBy: 200,
+  
+            // Buttons
+            forward: $wrap.find('.forward'),
+            backward: $wrap.find('.backward'),
+            prev: $wrap.find('.prev'),
+            next: $wrap.find('.next'),
+            prevPage: $wrap.find('.prevPage'),
+            nextPage: $wrap.find('.nextPage')
+        });
+
+    // Reload on resize
+    $(window).on('resize', function() {
+        $frame.reload();
+    });
+
+  }
+
   function updateBlockClass(){
     grid_data.splice(0,1);
     var new_arr = [];

@@ -20,7 +20,8 @@
       <div unselectable='on' class='unselectable p2score'></div>
       <div id='robotCount' unselectable='on' class='unselectable'></div>
     </div>-->
-    
+
+    <!-- user info -->
     <div  id='p1' class="box">
       <div class="pic" ><div class="userbox" ></div>
     </div>
@@ -48,43 +49,65 @@
       <p><span class="user">Player4!</span></p>
       <p class="user_stat">HP <span class="hp">100</span><span class="hp 80"></span></p>
     </div>
+    <!-- user info -->
 
+    <!-- SLY -->
+    <div class="wrap">
+      <h2>Items in game <small>- description of items use in game.</small></h2>
+ 
+      <div id="scrollbar" class="scrollbar">
+        <div class="handle"><div class="mousearea"></div></div>
+      </div>
+      <div id="frame">
+        <ul id="items_grid" class="slidee flex-container">
+        </ul>
+      </div>
+    </div>  
+    <!-- SLY -->
+
+    <!-- plane  -->
     <div id="plane1"></div>
 
+    <!-- laser -->
     <div class="redLaserRay">
       <div class="redLaserRay1"></div>
       <div class="redLaserRay2"></div>
     </div>
-
     <div class="greenLaserRay">
       <div class="greenLaserRay1"></div>
       <div class="greenLaserRay2"></div>
     </div>
+
+    <!-- timer -->
     <div class="timer"></div><div class="timer fill"></div>
 
+    <!-- points -->
     <div id="points" class="points"> 100 </div>
+
+    <!-- main game level -->
     <div id='level' unselectable='on' class='unselectable'></div>
  
+    <!-- State of Game -->
     <div id="demo" class='green'>
-
       <h1> State of Game</h1>
-
       <div id="controls">
         <button id="selected_position" onclick="GameState.selected_position();">selected_position</button>
         <button id="event_item"  onclick="GameState.event_item();">event_item</button>
         <button id="end_turn"  onclick="GameState.end_turn();">end_turn</button>
         <button id="restart_turn" onclick="GameState.restart_turn();">restart_turn!</button>
       </div>
-   
       <textarea id="output">
       </textarea>
-
     </div> 
-   
+    <!-- State of Game -->
+
+    <!-- progress -->
     <div id='progress' unselectable='on' class='unselectable progress progress-success progress-striped active'>
       <div id='progress-bar' unselectable='on' class='unselectable bar' style='width: 0%'></div>
     </div>
     <h1><div id='credit' unselectable='on' class='unselectable'></div></h1>
+    <!-- progress -->
+
   </div>
 
   <!-- would be nice to use application/javascript but that does not work with IE8 -->
@@ -104,6 +127,8 @@
   <script type="text/javascript" src="js/PxLoaderSound.js"></script> 
   <script type='text/javascript' src='js/astar.js'></script>
   <script type='text/javascript' src='js/graph.js'></script>
+  <script type='text/javascript' src='js/items.js'></script>
+  <script type='text/javascript' src='js/sly.min.js'></script>
   <script type="text/javascript" src="js/game.anim.utils.js"></script>
   <script type='text/javascript' src='js/game-1.0.js'></script>
   <script type="text/javascript" src="js/state.js"></script> 

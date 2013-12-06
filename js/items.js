@@ -1,3 +1,4 @@
+var nemesis = ['nemesis_blue','nemesis_brown','nemesis_green','nemesis_greenblue','nemesis_lightblue','nemesis_lightgreen','nemesis_lime','nemesis_neon','nemesis_pink','nemesis_purple','nemesis_red','nemesis_yellow','nemesis_cartoon'];
 var blocks = ['block_yellow','block_purple','block_red','block_pink','block_lime','block_lightblue',
 'block_greenblue','block_green','block_brown','block_blue','block'];
 var items_database = [{

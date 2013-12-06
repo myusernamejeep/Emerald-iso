@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>End Game</title>
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/ospb.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/horizontal.css">
+	<link rel="stylesheet" href="css/login.css">
+	<script type='text/javascript' src="js/vendor/modernizr.js"></script>
+ 	<style type="text/css">
+ 	.pagespan {
+		width: 387px;
+	}
+	.last_rank{
+		font-size: 50px;
+		padding-top: 35px;
+		margin-left: 35px;
+	}
+	.rank{
+		height:30px;
+		width:100%;
+	}
+	.rank1{
+		margin-top: -40px !important;
+		border-bottom: 90px solid white;
+		height: 190px;
+	}
+	.rank2{
+		margin-top: -20px !important;
+
+		height: 170px;
+		border-bottom: 70px solid white;
+	}
+	.rank3{
+		height: 150px;
+		border-bottom: 50px solid white;
+	}
+	.rank4{
+		border-radius: 70px;
+		border: 3px solid brown;
+		background-color:rgb(67, 70, 70);
+	}
+	.frame ul li {
+		background:none;
+		color:#333;
+		font-weight: bold;	
+		font-style: italic;
+		margin: 0 ;
+	}
+
+	.rays {
+		background: url(imgs/rays-main.png) 0 0 no-repeat;
+		position: absolute;
+		z-index: -1;
+		top: -239px;
+		left: -51px;
+		width: 490px;
+		height: 490px;
+		-webkit-animation-name: spin;
+		-webkit-animation-duration: 40000ms;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-name: spin;
+		-moz-animation-duration: 40000ms;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-timing-function: linear;
+		-ms-animation-name: spin;
+		-ms-animation-duration: 40000ms;
+		-ms-animation-iteration-count: infinite;
+		-ms-animation-timing-function: linear;
+		-o-transition: rotate(3600deg);
+	}
+ 	</style>
+</head>
+<body>
+	<header class="pagespan">
+		<!--<h1>Robot iso</h1>-->
+		<h2>Your rank is #2</h2>
+
+		<p>Your robot is runners-up.</p>
+	</header>
+	<div class="pagespan container">
+		<div class="wrap">
+			
+			<div class="frame" id="goal" >
+				<ul class="clearfix" >
+				</ul>
+			</div>
+ 			<div class="controls center ">
+				<button class="btn next">next <i class="icon-chevron-right"></i></button>
+			</div>
+		</div>
+  
+	</div>
+
+<!-- Scripts -->
+	<script type='text/javascript' src='js/jquery-1.7.1.min.js'></script>
+ 	<script type='text/javascript' src='js/underscore-min.js'></script>
+ 	<script type='text/javascript' src="js/jquery.spritely-0.6.1.js"></script>
+	<script type='text/javascript' src='js/items.js'></script>
+  	<script type='text/javascript' src='js/endgame.js'></script>
+  	  
+</body>
+</html>

@@ -12,7 +12,130 @@
 	<link rel="stylesheet" href="css/horizontal.css">
 	<link rel="stylesheet" href="css/login.css">
 	<script type='text/javascript' src="js/vendor/modernizr.js"></script>
- 
+ 	<link rel="stylesheet" href="fontello/css/fontello.css">
+    <link rel="stylesheet" href="fontello/css/animation.css">
+    <style type="text/css">
+    .emo{
+    	border: 3px solid white;
+		border-radius: 128px;
+		padding: 15px;	
+    }
+    .emo i:after {
+		content: "";
+		position: absolute;
+		z-index: -2;
+		bottom: -30px;
+		right: 25%;
+		height: 40px;
+		border-right: 90px solid #ffed26;
+		background: #ffed26;
+		-webkit-border-bottom-right-radius: 200px 100px;
+		-moz-border-radius-bottomright: 200px 100px;
+		border-bottom-right-radius: 200px 100px;
+		-webkit-transform: translate(0, -2px);
+		-moz-transform: translate(0, -2px);
+		-ms-transform: translate(0, -2px);
+		-o-transform: translate(0, -2px);
+		transform: translate(0, -2px);
+		display: block;
+		width: 0;
+	} 
+	.bubble {
+		position: relative;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-o-border-radius: 50%;
+		border-radius: 50%;
+		background: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 100, color-stop(70%, #ffffff), color-stop(100%, #e6e6e6));
+		background: -webkit-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+		background: -moz-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+		background: -o-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+		background: radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+		border: 2px solid #b3b3b3;
+
+
+		width: 6em;
+		height: 6em;
+		margin: 4em auto;
+	}
+
+	.bubble:before {
+		content: "";
+		position: absolute;
+		display: block;
+		width: 0;
+		height: 0;
+		border-top: 23px solid #b3b3b3;
+		border-right: 13px solid transparent;
+		border-left: 13px solid transparent;
+		position: absolute;
+		bottom: -23px;
+		left: 50%;
+		margin-left: -13px;
+	}
+	.bubble:after {
+		content: "";
+		position: absolute;
+		display: block;
+		width: 0;
+		height: 0;
+		border-top: 20px solid #e6e6e6;
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+		position: absolute;
+		bottom: -20px;
+		left: 50%;
+		margin-left: -10px;
+	}
+
+
+	.bubble {
+    position: relative;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    background: -webkit-gradient(radial, 50% 0%, 0, 50% 0%, 100, color-stop(70%, #ffffff), color-stop(100%, #e6e6e6));
+    background: -webkit-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+    background: -moz-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+    background: -o-radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+    background: radial-gradient(top, farthest-side, #ffffff 70%, #e6e6e6);
+    border: 2px solid #b3b3b3;
+}
+
+.bubble:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 20px solid #e6e6e6;
+    border-right: 10px solid transparent;
+    border-left: 10px solid transparent;
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    margin-left: -10px;
+}
+
+.bubble:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 23px solid #b3b3b3;
+    border-right: 13px solid transparent;
+    border-left: 13px solid transparent;
+    position: absolute;
+    bottom: -23px;
+    left: 50%;
+    margin-left: -13px;
+}
+
+</style>
 </head>
 <body>
 	<header class="pagespan">
@@ -40,8 +163,12 @@
 				<button class="btn next">next <i class="icon-chevron-right"></i></button>
 			</div>
 		</div>
-
- 
+		<i class="icon-emo-beer emo"></i>
+ 		<i class="icon-emo-laugh bubble"></i>
+ 		<i class="icon-emo-shoot emo"></i>
+ 		<i class="icon-emo-angry bubble"></i>
+ 		<i class="icon-emo-happy emo"></i>
+ <div class="bubble"></div>
 		<section class="main">
 			<form class="form-5 clearfix">
 			    <p>

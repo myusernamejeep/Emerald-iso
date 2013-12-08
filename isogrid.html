@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>isogrid</title>
+	<link rel="stylesheet" href="css/isogrid/style.css">
+	<style type="text/css">
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#stats {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+} 
+</style>
+</head>
+
+<body>
+	<div id="stats"></div>
+	<canvas id="canvas" resize></canvas>
+	<svg id="svg" width="200" height="200"></svg>
+</body>
+
+<script type="text/javascript" src="js/isogrid/paper.js"></script>
+<script type="text/javascript" src="js/isogrid/FileSaver.js"></script>
+<script type="text/javascript" src="js/isogrid/stats.js"></script>
+<script type="text/paperscript" src="js/isogrid/isogrid.js" canvas="canvas"></script>
+ 
+</html>

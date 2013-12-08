@@ -1,0 +1,52 @@
+
+<html>
+<head>
+<script type="text/javascript">
+ 
+function test() {
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var cw = canvas.width;
+        var ch = canvas.height;
+        var id = ctx.getImageData(0, 0, 1, 1);
+        var pixel_data = [8, 1, 1, 1, 4, 1, 1, 1, 1, 5, 
+                 1, 0, 0, 0, 5, 0, 0, 0, 0, 1, 
+                 4, 1, 1, 4, 1, 4, 0, 0, 0, 1, 
+                 1, 0, 0, 1, 0, 5, 4, 1, 1, 4, 
+                 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 
+                 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 
+                 1, 0, 4, 5, 4, 1, 5, 5, 1, 5, 
+                 5, 4, 1, 0, 1, 0, 0, 1, 0, 1, 
+                 1, 0, 1, 0, 5, 1, 1, 4, 0, 1, 
+                 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 
+                 5, 1, 5, 4, 1, 1, 1, 5, 5, 4, 
+                 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
+                 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
+                 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 
+                 5, 1, 1, 5, 1, 1, 1, 4, 1, 9];
+        ctx.clearRect(0, 0, cw, ch);
+         if(!canvas.getContext) 
+        {
+            return;
+        } 
+        var pixSize = 20;
+        for (var j=0; j < 10; j++)    
+        {   
+            for (var i=0; i < 15; i++)
+            {
+                var col = pixel_data[(i*10)+j];
+                //con
+                ctx.fillStyle = col>0?'rgb(0,0,0)':'rgb(255,255,255)';
+                ctx.fillRect(j*pixSize,i*pixSize,pixSize,pixSize);
+            }
+        }
+        var img    = canvas.toDataURL("image/png");
+        document.write('<img src="'+img+'">');         
+}
+ 
+</script>
+</head>
+<body onload="test()">
+<canvas id="canvas" width="200" height="300">
+</body>
+</html>
